@@ -26,31 +26,22 @@ class dbConnector:
         self.execute(query)        
         row = self.cursor.fetchone()
         print(row[0])        
-            
-    def insert(self, dbTable, dbColumn, dbValue):
-        query = "INSERT INTO " + dbTable + "(" + dbColumn[0] + ", " + dbColumn[1] + ", " + dbColumn[2] + ", " + dbColumn[3] + ") VALUES (%s,%s,%s,%s)"
-        
-        self.execute1(query, dbValue)             
+                
+    def insert(self, query):        
+        self.execute(query)             
         self.db.commit()
                     
-    def select(self, dbcolumn, dbtable, dbcondition ):
-   
-        query = "SELECT " + dbcolumn + " FROM " + dbtable; 
-        print(query)
-        self.execute(query)
-        
-        result = self.cursor.fetchall()
-        
-        print(result[0])
-        print(result[1])        
-        
-    def execute(self, sqlStatement):
-        self.cursor.execute(sqlStatement)
-        
-    def execute1(self, query, args):
-        self.cursor.execute(query, args)
-        print 'done'
+    def select(self, query):
+        self.execute(query)        
+        result = self.cursor.fetchall()        
+        return result
             
+    def execute(self, sqlStatement, args = None):
+        if args == None:
+            self.cursor.execute(sqlStatement)
+        else:
+            self.cursor.execute(sqlStatement, args)
+                            
     def __del__(self):
         print '\nFinishing operations...'
         self.cursor.close()

@@ -46,10 +46,6 @@ for x in result1:
     print(x.text)
     i = i + 1
 
-
-
-
-
 page = urllib2.urlopen(url)
 soup = BeautifulSoup(page, from_encoding="euc-kr")
 

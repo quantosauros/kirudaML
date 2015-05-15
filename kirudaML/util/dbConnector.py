@@ -22,12 +22,6 @@ class dbConnector:
             print 'Error: %s ' %error + '\nStop.\n'
             sys.exit()
         
-    def connect(self):
-        query = self.cursor.execute()
-        self.execute(query)        
-        row = self.cursor.fetchone()
-        print(row[0])        
-                
     def insert(self, query):        
         self.execute(query)             
         self.db.commit()

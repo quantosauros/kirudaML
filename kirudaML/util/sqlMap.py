@@ -7,6 +7,8 @@ Created on 2015. 5. 14.
 
 class sqlMap:
     
+    connectInfo = ("61.96.111.174", "niks12", "12345", "kiruda")
+    
     selectStockInfo = " \
         SELECT \
             A.CODE, A.EXP1, A.EXP2, A.EXP3, A.EXP4, A.ARRAYNUM, B.URL1, B.URL2 \
@@ -28,5 +30,10 @@ class sqlMap:
         VALUES \
             ( %s )"
     
-
+    selectStockCode = " \
+        SELECT \
+            * \
+        FROM \
+            STOCK_INFO\
+        "
             

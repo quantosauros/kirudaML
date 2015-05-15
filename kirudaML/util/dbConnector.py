@@ -9,11 +9,12 @@ import sys
 class dbConnector:
     '''
     classdocs
-    '''
-    def __init__(self, dbhost, dbuser, dbpasswd, dbname):        
+    '''    
+    def __init__(self, dbArgs):
+        #dbArgs : dbhost, dbuser, dbpasswd, dbname
         try:
             print '\nChecking MySQL connection...'
-            self.db = MySQLdb.connect(dbhost, dbuser, dbpasswd, dbname)
+            self.db = MySQLdb.connect(dbArgs[0], dbArgs[1], dbArgs[2], dbArgs[3])
             self.cursor = self.db.cursor()
             self.cursor.execute('select version()')
             print 'Connection OK, proceeding.'
@@ -30,11 +31,13 @@ class dbConnector:
     def insert(self, query):        
         self.execute(query)             
         self.db.commit()
+        print 'Inserted data.'
                     
     def select(self, query):
         self.execute(query)        
-        result = self.cursor.fetchall()        
-        return result
+        result = self.cursor.fetchall()
+        print 'Selected data.'        
+        return result    
             
     def execute(self, sqlStatement, args = None):
         if args == None:

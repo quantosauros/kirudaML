@@ -6,11 +6,8 @@ Created on 2015. 5. 13.
 from util import dbConnector
 from util.sqlMap import sqlMap 
 
-dbInstance = dbConnector.dbConnector(
-            "61.96.111.174", 
-            "niks12", 
-            "12345", 
-            "kiruda")
+print("asasdasd")
+dbInstance = dbConnector.dbConnector(sqlMap.connectInfo)
 
 #INSERT
 TABLENAME = "stock_data"
@@ -19,7 +16,7 @@ VALUES = "'testCode','20150555','1111' ,'123'"
 dbInsertStatement = sqlMap.insertStockData %(TABLENAME, COLUMNNAME, VALUES)
 
 print(dbInsertStatement)
-dbInstance.insert(dbInsertStatement)
+#dbInstance.insert(dbInsertStatement)
 
 #SELECT
 dbSelectStatement = sqlMap.selectStockInfo

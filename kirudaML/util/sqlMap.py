@@ -11,10 +11,10 @@ class sqlMap:
     
     selectStockInfo = " \
         SELECT \
-            A.CODE, A.EXP1, A.EXP2, A.EXP3, A.EXP4, A.ARRAYNUM, B.URL1, B.URL2 \
+            A.CODE, A.EXP1, A.EXP2, A.EXP3, A.EXP4, A.ARRAYNUM, B.URL1, B.URL2, A.DATANAME, A.SITECODE \
         FROM \
             (SELECT \
-                EXP1, EXP2, EXP3, EXP4, ARRAYNUM, SITECODE, CODE \
+                EXP1, EXP2, EXP3, EXP4, ARRAYNUM, SITECODE, CODE, DATANAME\
             FROM \
                 SITE_DATA) A, \
             (SELECT \
@@ -36,4 +36,19 @@ class sqlMap:
         FROM \
             STOCK_INFO\
         "
-            
+        
+    selectDataInfo = " \
+        SELECT \
+            CODE, UNIT, CCY_CD \
+        FROM \
+            DATA_INFO \
+        WHERE \
+            SITECODE = '%s' \
+            AND CODE = '%s' \
+        "
+        
+        
+        
+        
+        
+        

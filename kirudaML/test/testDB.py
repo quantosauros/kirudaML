@@ -21,7 +21,9 @@ print(dbInsertStatement)
 #SELECT
 dbSelectStatement = sqlMap.selectStockInfo
 
-result = dbInstance.select(dbSelectStatement)
+#result = dbInstance.select(dbSelectStatement)
+result = dbInstance.select(sqlMap.selectDataInfo %('NA0001', 'faceValue'))
+
 
 for x in result:
     print(x)

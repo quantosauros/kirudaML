@@ -27,7 +27,7 @@ class dbConnector:
         self.db.commit()
         print 'Inserted data.'
                     
-    def select(self, query):
+    def select(self, query):        
         self.execute(query)        
         result = self.cursor.fetchall()
         print 'Selected data.'        

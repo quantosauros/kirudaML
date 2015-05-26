@@ -11,10 +11,10 @@ class sqlMap:
     
     selectStockInfo = " \
         SELECT \
-            A.CODE, A.EXP1, A.EXP2, A.EXP3, A.EXP4, A.ARRAYNUM, B.URL1, B.URL2, A.DATANAME, A.SITECODE \
+            A.CODE, A.XPATH, A.ARRAYNUM, B.URL1, B.URL2, A.DATANAME, A.SITECODE \
         FROM \
             (SELECT \
-                EXP1, EXP2, EXP3, EXP4, ARRAYNUM, SITECODE, CODE, DATANAME\
+                XPATH, ARRAYNUM, SITECODE, CODE, DATANAME, YN\
             FROM \
                 SITE_DATA) A, \
             (SELECT \
@@ -22,7 +22,8 @@ class sqlMap:
             FROM \
                 SITE_INFO) B \
         WHERE \
-             A.SITECODE = B.CODE"
+             A.SITECODE = B.CODE\
+             AND A.YN = 'Y'"
 
     insertStockData = " \
         INSERT INTO \

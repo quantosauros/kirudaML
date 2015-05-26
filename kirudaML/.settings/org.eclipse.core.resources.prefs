@@ -1,2 +1,4 @@
 eclipse.preferences.version=1
 encoding//test/testParsing.py=cp949
+encoding//test/testStack.py=utf-8
+encoding//test/testXPath.py=cp949

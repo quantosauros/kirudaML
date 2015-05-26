@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 '''
 Created on 2015. 5. 15.
 
@@ -17,8 +18,6 @@ print(selectInfo)
 
 dataIndex = 0
 stockIndex = 0
-
-
 
 for stockIndex in range(0, len(stockCode)):
     for dataIndex in range(0, len(selectInfo)):        

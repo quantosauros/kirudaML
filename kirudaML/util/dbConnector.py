@@ -16,7 +16,7 @@ class dbConnector:
             print '\nChecking MySQL connection...'
             self.db = MySQLdb.connect(dbArgs[0], dbArgs[1], dbArgs[2], dbArgs[3])
             self.cursor = self.db.cursor()
-            self.cursor.execute('set names utf8')            
+            #self.cursor.execute('set names utf8')            
             self.cursor.execute('select version()')
             print 'Connection OK, proceeding.'
         except MySQLdb as error:
@@ -29,7 +29,7 @@ class dbConnector:
         print 'Inserted data.'
                     
     def select(self, query):       
-        self.cursor.execute('set names utf8') 
+        #self.cursor.execute('set names utf8') 
         self.execute(query)        
         result = self.cursor.fetchall()
         print 'Selected data.'        

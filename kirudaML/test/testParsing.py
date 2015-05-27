@@ -14,14 +14,14 @@ url = 'http://finance.naver.com/item/sise.nhn?code=008770'
 regularExp1 = ["span", "tah p11 nv01"]
 regularExp2 = ["span", "tah p11 red01"]
  
-result1 = htmlParser.htmlParser.parse1(url, regularExp1)
+result1 = htmlParser.htmlParser.parse(url, regularExp1)
 i = 0
 for x in result1:
     print("%d : " % i)
     print(x.text)
     i = i + 1
     
-result2 = htmlParser.htmlParser.parse1(url, regularExp2)
+result2 = htmlParser.htmlParser.parse(url, regularExp2)
 i = 0
 for x in result2:
     print("%d : " % i)

@@ -25,6 +25,23 @@ class sqlMap:
              A.SITECODE = B.CODE\
              AND A.YN = 'Y'"
 
+    selectStockInfoDaily = " \
+        SELECT \
+            A.CODE, A.XPATH, A.ARRAYNUM, B.URL1, B.URL2, A.DATANAME, A.SITECODE \
+        FROM \
+            (SELECT \
+                XPATH, ARRAYNUM, SITECODE, CODE, DATANAME, YN, DATATYPE\
+            FROM \
+                SITE_DATA) A, \
+            (SELECT \
+                URL1, URL2, CODE \
+            FROM \
+                SITE_INFO) B \
+        WHERE \
+             A.SITECODE = B.CODE\
+             AND A.YN = 'Y'\
+             AND A.DATATYPE IN ('D')"    
+
     insertStockData = " \
         INSERT INTO \
             %s ( %s ) \

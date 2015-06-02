@@ -18,10 +18,11 @@ from util.htmlParser import htmlParser
 
 #네이버시세
 #url = 'http://finance.naver.com/item/sise.nhn?code=008770&asktype=10'
-url = 'http://finance.naver.com/item/sise.nhn?code=004650&asktype=10'
+url = 'http://finance.naver.com/sise/sise_market_sum.nhn?sosok=0&page=1'
 #네이버시세 - 매도 호가
 #/html/body/table[1]/tbody/tr[3]/td[1]/span
-xPath = '//*[@id="content"]/div[2]/div[1]/table/tbody/tr/td[1]/span/text()'
+xPath = '//*[@class="pgRR"]/a/@href'
+         
          
 #네이버시세 - 매수 호가
 #xPath = '//span[@class="tah p11 red01"]/text()'
@@ -34,6 +35,7 @@ result = htmlParser.xPathParse(url, xPath)
 i = 0
 for x in result:
     print("%d : " % i)
-    print(x.strip())
+    print(x)
+    print(x[39:])
     i = i + 1
     

@@ -37,10 +37,10 @@ for marketIndex in range(0, len(stockListMax)):
             market = selectInfo[marketIndex][5]
             ticker = y[20:]
             code = market + ticker            
-            print(code + " " + market + " " + ticker)
+            print(code + "," + ticker + "," + market)
     
-        print("=============================================" + repr(pageIndex))
+        #print("=============================================" + repr(pageIndex))
         
-    print("+_+_+_+_+_+_+_+_+_+_+_+_+_+__+_+_+_+_+_+")
+    #print("+_+_+_+_+_+_+_+_+_+_+_+_+_+__+_+_+_+_+_+")
         
         

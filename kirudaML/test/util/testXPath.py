@@ -7,6 +7,7 @@ Created on 2015. 5. 26.
 
 from lxml import html
 from util.htmlParser import htmlParser
+from util.stringController import stringController
 
 
 #시간별시세
@@ -18,10 +19,11 @@ from util.htmlParser import htmlParser
 
 #네이버시세
 #url = 'http://finance.naver.com/item/sise.nhn?code=008770&asktype=10'
-url = 'http://finance.naver.com/sise/sise_market_sum.nhn?sosok=0&page=1'
+url = 'http://finance.naver.com/item/sise.nhn?code=004650&asktype=10'
 #네이버시세 - 매도 호가
-#/html/body/table[1]/tbody/tr[3]/td[1]/span
-xPath = '//*[@class="pgRR"]/a/@href'
+xPath = '//*[@id="content"]/div[2]/div[2]/table/tbody/tr//*[contains(@class, "tah")]//text()'
+
+#xPath = '//*[@id="content"]/div[2]/div[1]/table/tbody/tr/td//*[contains(@class, "tah")]/text()'
          
          
 #네이버시세 - 매수 호가
@@ -35,7 +37,8 @@ result = htmlParser.xPathParse(url, xPath)
 i = 0
 for x in result:
     print("%d : " % i)
-    print(x)
-    print(x[39:])
+    #print(x)
+    print(stringController.cleanUpString(x))
+    #print(x[39:])
     i = i + 1
     

@@ -25,7 +25,29 @@ class sqlMap:
              A.SITECODE = B.CODE\
              AND A.YN = 'Y'"
 
-    selectStockInfoDaily = " \
+    SELECTSITEDATA_XPATH = "\
+        SELECT \
+            DISTINCT(XPATH) \
+        FROM \
+            SITE_DATA \
+        WHERE \
+            YN = 'Y' \
+            AND DATATYPE = '%s'"
+    
+    SELECTPARSEINGINFO = " \
+        SELECT \
+            A.DATANAME, B.URL1, B.URL2, C.XPATH, A.ARRAYNUM \
+        FROM \
+            SITE_DATA A, \
+            SITE_INFO B, \
+            XPATH_INFO C \
+        WHERE \
+            C.CODE = A.XPATH \
+            AND B.CODE = A.SITECODE \
+            AND A.YN = 'Y' \
+            AND A.XPATH = '%s'"
+
+    selectSiteDataDaily = " \
         SELECT \
             A.CODE, A.XPATH, A.ARRAYNUM, B.URL1, B.URL2, A.DATANAME, A.SITECODE \
         FROM \
@@ -85,7 +107,7 @@ class sqlMap:
     
     selectStockCode = " \
         SELECT \
-            * \
+            CODE, TICKER, MARKET \
         FROM \
             STOCK_INFO\
         "
@@ -99,7 +121,14 @@ class sqlMap:
             SITECODE = '%s' \
             AND CODE = '%s' \
         "
-        
+    selectXpathInfo = "\
+        SELECT \
+            XPATH \
+        FROM \
+            XPATH_INFO \
+        WHERE \
+            CODE = '%s' \
+    "
         
         
         

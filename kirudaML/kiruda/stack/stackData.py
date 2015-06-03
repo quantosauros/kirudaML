@@ -3,11 +3,14 @@ Created on 2015. 5. 14.
 
 @author: Jay
 '''
-from util.dbConnector import dbConnector
-from util.sqlMap import sqlMap
-from util.htmlParser import htmlParser
-from util.stringController import stringController as SC
+from datetime import datetime
 import time
+
+from util.dbConnector import dbConnector
+from util.htmlParser import htmlParser
+from util.sqlMap import sqlMap
+from util.stringController import stringController as SC
+
 
 class stackData:
     '''
@@ -30,7 +33,7 @@ class stackData:
             db_selectParsingInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %(db_selectSiteData_XPath[parseIndex]))
             #print(db_selectParsingInfo)
     
-            for stockIndex in range(0, len(db_stockCode)):
+            for stockIndex in range(0, 1):#len(db_stockCode)):
                 #print(repr(stockIndex) +" : " + db_stockCode[stockIndex][0])
                 url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + db_selectParsingInfo[0][2]
                 xPath = db_selectParsingInfo[0][3]    
@@ -60,6 +63,7 @@ class stackData:
         
         
         end_time = time.time()
+        print("Stack the Daily Stock Data at " + SC.todayDate() + SC.todayTime())
         print ("TIME: " + repr(round(end_time - start_time, 5)) + "sec")
 
     

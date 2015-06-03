@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//test/stack/testStack01.py=utf-8
 encoding//test/stack/testStack02.py=utf-8
+encoding//test/testAnything.py=utf-8
 encoding//test/util/testParsing.py=cp949
 encoding//test/util/testXPath.py=cp949
 encoding//util/stringController.py=utf-8

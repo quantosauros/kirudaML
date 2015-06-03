@@ -42,10 +42,14 @@ for parseIndex in range(0, len(db_selectSiteData_XPath)):
                     
         for dataIndex in range(0, len(parseResult)):
             comma = "" if dataIndex == len(parseResult) - 1 else SC.comma()
-            
             COLUMNNAME = COLUMNNAME + db_selectParsingInfo[dataIndex][0] + comma            
-            value = parseResult[db_selectParsingInfo[dataIndex][4]]
-            VALUES = VALUES + SC.makeQuotation(SC.cleanUpString(value)) + comma                        
+            value = SC.cleanUpString(parseResult[db_selectParsingInfo[dataIndex][4]])
+                                 
+            #액면가가 국외통화인 경우, 통화코드 제거
+            if db_selectParsingInfo[dataIndex][0] == 'faceValue':
+                value = SC.cleanUpStringForFaceValue(value)
+                
+            VALUES = VALUES + SC.makeQuotation(value) + comma                        
             #print(db_selectParsingInfo[dataIndex][0] + ": " + SC.cleanUpString(value))
             
         #print(COLUMNNAME)

@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 '''
 Created on 2015. 5. 14.
 
@@ -31,9 +32,9 @@ class stackData:
 
         for parseIndex in range(0, len(db_selectSiteData_XPath)):
             db_selectParsingInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %(db_selectSiteData_XPath[parseIndex]))
-            #print(db_selectParsingInfo)
+            print(db_selectParsingInfo)
     
-            for stockIndex in range(0, 1):#len(db_stockCode)):
+            for stockIndex in range(0, len(db_stockCode)):
                 #print(repr(stockIndex) +" : " + db_stockCode[stockIndex][0])
                 url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + db_selectParsingInfo[0][2]
                 xPath = db_selectParsingInfo[0][3]    
@@ -46,20 +47,29 @@ class stackData:
                 COLUMNNAME = "code,date,"
                 VALUES = SC.makeQuotation(db_stockCode[stockIndex][0]) + SC.comma() + \
                     SC.makeQuotation(SC.todayDate()) + SC.comma()
+
+                #빈 데이터가 있을 경우(Face Value가 없음) 0으로 예외처리
+                if len(parseResult) is not len(db_selectParsingInfo):
+                    parseResult.insert(10, '0')
                     
-                for dataIndex in range(0, len(parseResult)):
-                    comma = "" if dataIndex == len(parseResult) - 1 else SC.comma()
-            
+                for dataIndex in range(0, len(db_selectParsingInfo)):                                                   
+                    comma = "" if dataIndex == len(parseResult) - 1 else SC.comma()            
                     COLUMNNAME = COLUMNNAME + db_selectParsingInfo[dataIndex][0] + comma            
-                    value = parseResult[db_selectParsingInfo[dataIndex][4]]
-                    VALUES = VALUES + SC.makeQuotation(SC.cleanUpString(value)) + comma                        
+                    value = SC.cleanUpString(parseResult[db_selectParsingInfo[dataIndex][4]])
+                                        
+                    #액면가가 국외통화인 경우, 통화코드 제거
+                    if db_selectParsingInfo[dataIndex][0] == 'faceValue':
+                        value = SC.cleanUpStringForFaceValue(value)
+                        
+                    VALUES = VALUES + SC.makeQuotation(value) + comma                        
                     #print(db_selectParsingInfo[dataIndex][0] + ": " + SC.cleanUpString(value))
             
                 #print(COLUMNNAME)
                 #print(VALUES)     
                 dbInsertStatement = sqlMap.insertStockData %(TABLENAME, COLUMNNAME, VALUES)
+                print(dbInsertStatement)
                 dbInstance.insert(dbInsertStatement)
-                #print(dbInsertStatement)
+                
         
         
         end_time = time.time()

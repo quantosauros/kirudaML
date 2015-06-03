@@ -13,17 +13,32 @@ class stringController():
 
     @staticmethod
     def makeQuotation(str):
-        return "'" + str + "'"
+        #null인 경우 quotation 없이 return
+        if "null" in str:
+            return str;
+        else :
+            return "'" + str + "'"
     
     @staticmethod
-    def cleanUpString(str):
-        
+    def cleanUpString(str):        
         str = str.strip()        
         str = str.replace(',', '')        
         str = str.replace('%', '')
         str = str.replace(unicode('원','utf-8'),'')
-        
-        return str 
+        #값이 N/A인 경우, null로 입력
+        if "N/A" in str :
+            str = 'null'
+            return str
+                 
+        return str
+
+    @staticmethod
+    def cleanUpStringForFaceValue(str):
+        tmp = str.split()
+        if len(tmp) is not 1:
+            return tmp[0]
+        else: 
+            return str
     
     @staticmethod
     def todayDate():

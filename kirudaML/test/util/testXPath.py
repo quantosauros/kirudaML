@@ -19,9 +19,9 @@ from util.stringController import stringController
 
 #네이버시세
 #url = 'http://finance.naver.com/item/sise.nhn?code=008770&asktype=10'
-url = 'http://finance.naver.com/item/sise.nhn?code=004650&asktype=10'
+url = 'http://finance.naver.com/item/sise.nhn?code=950110'
 #네이버시세 - 매도 호가
-xPath = '//*[@id="content"]/div[2]/div[2]/table/tbody/tr//*[contains(@class, "tah")]//text()'
+xPath = '//*[@id="_amount"]/text()'
 
 #xPath = '//*[@id="content"]/div[2]/div[1]/table/tbody/tr/td//*[contains(@class, "tah")]/text()'
          

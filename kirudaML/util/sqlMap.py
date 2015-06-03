@@ -45,7 +45,8 @@ class sqlMap:
             C.CODE = A.XPATH \
             AND B.CODE = A.SITECODE \
             AND A.YN = 'Y' \
-            AND A.XPATH = '%s'"
+            AND A.XPATH = '%s'\
+        ORDER BY A.ARRAYNUM"
 
     selectSiteDataDaily = " \
         SELECT \

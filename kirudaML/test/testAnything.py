@@ -1,17 +1,22 @@
-#-*- coding: utf-8 -*-
 '''
 Created on 2015. 5. 28.
 
 @author: Jay
 '''
-from util.stringController import stringController as SC
+from util.dbConnector import dbConnector
+from util.sqlMap import sqlMap
 
 
-todayDate = SC.todayDate()
+dbInstance = dbConnector(sqlMap.connectInfo)
 
-print(todayDate)
+TABLE = 'STOCK_INFO'
+COLUMNS = {'CODE', 'TICKERS', 'MARKET'}
+VALUES = {'KQ000250', '000250' , 'KQ'}
 
-todayTime = SC.todayTime()
+for x in COLUMNS:
+    print(x)
+    
+for y in VALUES:
+    print(y)
 
-print(todayTime)
-
+dbInstance.insert2(TABLE, COLUMNS, VALUES) 

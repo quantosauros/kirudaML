@@ -6,6 +6,7 @@ Created on 2015. 5. 28.
 '''
 from datetime import datetime, time
 
+
 class stringController():
     '''
     classdocs

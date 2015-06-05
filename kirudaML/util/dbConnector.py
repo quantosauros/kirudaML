@@ -24,10 +24,10 @@ class dbConnector:
             sys.exit()
         
     def insert(self, query):        
-        self.execute(query)             
+        self.execute(query)
         self.db.commit()
         print 'Inserted data.'
-                    
+                        
     def select(self, query):       
         #self.cursor.execute('set names utf8') 
         self.execute(query)        

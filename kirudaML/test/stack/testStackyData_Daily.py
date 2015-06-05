@@ -5,4 +5,5 @@ Created on 2015. 5. 28.
 '''
 from kiruda.stack.stackData import stackData
 
+#stackData.UpdateStockLists()
 stackData.StockDailyData()

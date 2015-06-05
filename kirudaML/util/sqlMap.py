@@ -65,41 +65,6 @@ class sqlMap:
              AND A.YN = 'Y'\
              AND A.DATATYPE IN ('D')"    
     
-    selectStockListUpdate = "\
-        SELECT \
-            A.CODE, A.XPATH, A.ARRAYNUM, B.URL1, B.URL2, A.DATANAME, A.SITECODE \
-        FROM \
-            (SELECT \
-                XPATH, ARRAYNUM, SITECODE, CODE, DATANAME, YN, DATATYPE\
-            FROM \
-                SITE_DATA) A, \
-            (SELECT \
-                URL1, URL2, CODE \
-            FROM \
-                SITE_INFO) B \
-        WHERE \
-             A.SITECODE = B.CODE\
-             AND A.YN = 'Y'\
-             AND A.DATANAME IN ('KS','KQ')"
-
-    selectStockListMAX = "\
-        SELECT \
-            A.CODE, A.XPATH, A.ARRAYNUM, B.URL1, B.URL2, A.DATANAME, A.SITECODE \
-        FROM \
-            (SELECT \
-                XPATH, ARRAYNUM, SITECODE, CODE, DATANAME, YN, DATATYPE\
-            FROM \
-                SITE_DATA) A, \
-            (SELECT \
-                URL1, URL2, CODE \
-            FROM \
-                SITE_INFO) B \
-        WHERE \
-             A.SITECODE = B.CODE\
-             AND A.YN = 'Y'\
-             AND A.DATANAME IN ('KS_MAX','KQ_MAX')"
-
-
     insertStockData = " \
         INSERT INTO \
             %s ( %s ) \
@@ -110,8 +75,7 @@ class sqlMap:
         SELECT \
             CODE, TICKER, MARKET \
         FROM \
-            STOCK_INFO\
-        "
+            STOCK_INFO "
         
     selectDataInfo = " \
         SELECT \
@@ -120,17 +84,27 @@ class sqlMap:
             DATA_INFO \
         WHERE \
             SITECODE = '%s' \
-            AND CODE = '%s' \
-        "
+            AND CODE = '%s' "
+        
     selectXpathInfo = "\
         SELECT \
             XPATH \
         FROM \
             XPATH_INFO \
         WHERE \
-            CODE = '%s' \
-    "
-        
+            CODE = '%s' "
+    
+    insertStockList = " \
+        INSERT INTO\
+            STOCK_INFO\
+            (CODE, TICKER, MARKET, CREATE_DATE) \
+        VALUES \
+            %s \
+        ON DUPLICATE KEY UPDATE \
+            CODE = VALUES(CODE), \
+            TICKER = VALUES(TICKER), \
+            MARKET = VALUES(MARKET), \
+            mod_date = NOW() "
         
         
         

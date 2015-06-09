@@ -47,7 +47,21 @@ class sqlMap:
             AND A.YN = 'Y' \
             AND A.XPATH = '%s'\
         ORDER BY A.ARRAYNUM"
-
+        
+    SELECTTRADERINFO_XPATH = " \
+        SELECT \
+            A.DATANAME, B.URL1, B.URL2, C.XPATH, A.ARRAYNUM \
+        FROM \
+            SITE_DATA A, \
+            SITE_INFO B, \
+            XPATH_INFO C \
+        WHERE \
+            C.CODE = A.XPATH \
+            AND B.CODE = A.SITECODE \
+            AND A.YN = 'N' \
+            AND A.XPATH = 'xpath_da_trader01'\
+        ORDER BY A.ARRAYNUM"
+        
     selectSiteDataDaily = " \
         SELECT \
             A.CODE, A.XPATH, A.ARRAYNUM, B.URL1, B.URL2, A.DATANAME, A.SITECODE \
@@ -106,6 +120,10 @@ class sqlMap:
             MARKET = VALUES(MARKET), \
             mod_date = NOW() "
         
-        
+    SELECTTRADERINFO = "\
+        SELECT \
+            * \
+        FROM \
+            TRADER_INFO"
         
         

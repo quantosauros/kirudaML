@@ -125,12 +125,15 @@ class stackData:
     @staticmethod
     def StockTraderData():
         start_time = time.time()
+        f = open(config.logPath + config.logName_StackTraderData, 'w')
         
         dbInstance = dbConnector(sqlMap.connectInfo)
         db_stockCode = dbInstance.select(sqlMap.selectStockCode)
         db_selectParsingInfo = dbInstance.select(sqlMap.SELECTTRADERINFO_XPATH)
+        db_traderInfo = dbInstance.select(sqlMap.SELECTTRADERINFO)
         
         stockLen = len(db_stockCode)
+        traderLen = len(db_traderInfo)
         
         for stockIndex in range(0, stockLen):
             
@@ -142,27 +145,89 @@ class stackData:
             dataLen = len(parseResult) - len(parseResult)/4
             
             TABLENAME = "stock_supdmd"
-            COLUMNNAME = "code,date,"
+            COLUMNNAME = "code,date, " if dataLen is not 0 else "code,date"
             VALUES = SC.makeQuotation(db_stockCode[stockIndex][0]) + SC.comma() + \
-                SC.makeQuotation(SC.todayDate()) + SC.comma()
+                SC.makeQuotation(SC.todayDate())
+            VALUES = VALUES + SC.comma() if dataLen is not 0 else VALUES
                 
             for dataIndex in range(0, dataLen):
                 
                 comma = "" if dataIndex == dataLen - 1 else SC.comma()
                 COLUMNNAME = COLUMNNAME + db_selectParsingInfo[dataIndex][0] + comma
         
-                value = SC.cleanUpString(parseResult[db_selectParsingInfo[dataIndex][4]])
+                value = SC.cleanUpString(parseResult[db_selectParsingInfo[dataIndex][4]]).encode('utf8')
+                if dataIndex % 3 == 0:
+                    flag = True
+                    #print(repr(dataIndex) +": "+ value)
+                    for traderIndex in range(0, traderLen):
+                        if db_traderInfo[traderIndex][1] == value:
+                            value = db_traderInfo[traderIndex][0]
+                            #print(value)
+                            flag = False
+                            break
+                    if flag == True :
+                        print(value)
                 #print(repr(dataIndex) + ": " + value)    
                 VALUES = VALUES + SC.makeQuotation(value) + comma
                 
             #print (COLUMNNAME)
             #print(VALUES)
             dbInsertStatement = sqlMap.insertStockData %(TABLENAME, COLUMNNAME, VALUES)
-            #dbInstance.insert(dbInsertStatement)
+            dbInstance.insert(dbInsertStatement)
+            f.write(dbInsertStatement)
             print(dbInsertStatement)
             
         end_time = time.time()
         print("Stack the Trader Data at " + SC.todayDate() + SC.todayTime())
         print ("TIME: " + repr(round(end_time - start_time, 5)) + "sec")
-        
+        f.close()
                     
+    @staticmethod
+    def StackFrgnData():
+        start_time = time.time()
+        f = open(config.logPath + config.logName_UpdateStockLists, 'w')
+        
+        dbInstance = dbConnector(sqlMap.connectInfo)
+        db_stockCode = dbInstance.select(sqlMap.selectStockCode)
+        db_selectParsingInfo = dbInstance.select(sqlMap.SELECTFRGNINFO_XPATH)
+        
+        stockLen = len(db_stockCode)         
+        
+        for stockIndex in range(0, stockLen):
+             
+            additionalURL = "" if db_selectParsingInfo[0][2] == None else db_selectParsingInfo[0][2]
+            url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + additionalURL
+            xPath = db_selectParsingInfo[0][3]
+            
+            parseResult = htmlParser.xPathParse(url, xPath)
+                
+            dataLen = len(db_selectParsingInfo)    
+            TABLENAME = "stock_supdmd"
+            COLUMNNAME = "code,date, " if dataLen is not 0 else "code,date"
+            VALUES = SC.makeQuotation(db_stockCode[stockIndex][0]) + SC.comma() + \
+                SC.makeQuotation(SC.todayDate())
+                
+            VALUES = VALUES + SC.comma() if dataLen is not 0 else VALUES
+        
+            for dataIndex in range(0, dataLen):  
+               
+                comma = "" if dataIndex == dataLen - 1 else SC.comma()        
+                COLUMNNAME = COLUMNNAME + db_selectParsingInfo[dataIndex][0] + comma
+        
+                value = SC.cleanUpString(parseResult[db_selectParsingInfo[dataIndex][4]]).encode('utf8')        
+                VALUES = VALUES + SC.makeQuotation(value) + comma
+                #print(value)
+            
+            dbInsertStatement = sqlMap.INSERTFRGNDATA %(VALUES)
+            print(dbInsertStatement)
+            dbInstance.insert(dbInsertStatement)
+            f.write(dbInsertStatement)
+               
+        end_time = time.time()
+        print("Stack the Foreign and Institution Data at " + SC.todayDate() + SC.todayTime())
+        print ("TIME: " + repr(round(end_time - start_time, 5)) + "sec")
+        f.close()
+    
+    
+    
+    

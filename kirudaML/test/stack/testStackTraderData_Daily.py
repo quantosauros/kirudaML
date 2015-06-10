@@ -8,6 +8,9 @@ from util.dbConnector import dbConnector
 from util.sqlMap import sqlMap
 from util.htmlParser import htmlParser
 from util.stringController import stringController as SC
+import time
+
+start_time = time.time()
 
 dbInstance = dbConnector(sqlMap.connectInfo)
 db_stockCode = dbInstance.select(sqlMap.selectStockCode)
@@ -45,20 +48,26 @@ for stockIndex in range(0, stockLen):
         COLUMNNAME = COLUMNNAME + db_selectParsingInfo[dataIndex][0] + comma
                     
         value = SC.cleanUpString(parseResult[db_selectParsingInfo[dataIndex][4]]).encode('utf8')
-        
-        if dataIndex / 4 == 0:
+                
+        if dataIndex % 3 == 0:
+            flag = True
+            #print(repr(dataIndex) +": "+ value)
             for traderIndex in range(0, traderLen):
                 if db_traderInfo[traderIndex][1] == value:
-                    print(db_traderInfo[traderIndex][0])
-        
+                    value = db_traderInfo[traderIndex][0]
+                    #print(value)
+                    flag = False
+                    break
+            if flag == True :
+                print(value)
         #print(repr(dataIndex) + ": " + value)    
         VALUES = VALUES + SC.makeQuotation(value) + comma
         
     #print (COLUMNNAME)
     #print(VALUES)
     dbInsertStatement = sqlMap.insertStockData %(TABLENAME, COLUMNNAME, VALUES)
-    print(dbInsertStatement)
-    #dbInstance.insert(dbInsertStatement)
+    #print(dbInsertStatement)
+    dbInstance.insert(dbInsertStatement)
      
-    
-    
+end_time = time.time()
+print ("TIME: " + repr(round(end_time - start_time, 5)) + "sec")   

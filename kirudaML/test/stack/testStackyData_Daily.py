@@ -7,3 +7,5 @@ from kiruda.stack.stackData import stackData
 
 stackData.UpdateStockLists()
 stackData.StockSisaeData()
+stackData.StockTraderData()
+stackData.StackFrgnData()

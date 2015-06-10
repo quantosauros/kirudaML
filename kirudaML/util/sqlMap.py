@@ -58,10 +58,24 @@ class sqlMap:
         WHERE \
             C.CODE = A.XPATH \
             AND B.CODE = A.SITECODE \
-            AND A.YN = 'N' \
+            AND A.YN = 'Y' \
             AND A.XPATH = 'xpath_da_trader01'\
         ORDER BY A.ARRAYNUM"
-        
+    
+    SELECTFRGNINFO_XPATH = " \
+        SELECT \
+            A.DATANAME, B.URL1, B.URL2, C.XPATH, A.ARRAYNUM \
+        FROM \
+            SITE_DATA A, \
+            SITE_INFO B, \
+            XPATH_INFO C \
+        WHERE \
+            C.CODE = A.XPATH \
+            AND B.CODE = A.SITECODE \
+            AND A.YN = 'Y' \
+            AND A.XPATH = 'xpath_na_frgn01'\
+        ORDER BY A.ARRAYNUM"
+    
     selectSiteDataDaily = " \
         SELECT \
             A.CODE, A.XPATH, A.ARRAYNUM, B.URL1, B.URL2, A.DATANAME, A.SITECODE \
@@ -119,6 +133,17 @@ class sqlMap:
             TICKER = VALUES(TICKER), \
             MARKET = VALUES(MARKET), \
             mod_date = NOW() "
+        
+    INSERTFRGNDATA = " \
+        INSERT INTO \
+            STOCK_SUPDMD \
+            (CODE, DATE, NETVOLUME_INSTITUTION, NETVOLUME_FOREIGN, FOREIGNSTOCKHOLDINGPERCENT) \
+        VALUES \
+            (%s) \
+        ON DUPLICATE KEY UPDATE \
+            NETVOLUME_INSTITUTION = VALUES(NETVOLUME_INSTITUTION), \
+            NETVOLUME_FOREIGN = VALUES(NETVOLUME_FOREIGN), \
+            FOREIGNSTOCKHOLDINGPERCENT = VALUES(FOREIGNSTOCKHOLDINGPERCENT)"
         
     SELECTTRADERINFO = "\
         SELECT \

@@ -9,28 +9,14 @@ from lxml import html
 from util.htmlParser import htmlParser
 from util.stringController import stringController
 
-
-#시간별시세
-#url = 'http://finance.naver.com//item/sise_time.nhn?code=008770&thistime=20150526125212'
-#xPath = '//span[@class="tah p10 gray03"]/text()'
-#xPath = '//span[@class="tah p11"]/text()'
-#전일비
-#xPath = '//span[@class="tah p11 red02"]/text()'
-
 #네이버시세
 #url = 'http://finance.naver.com/item/sise.nhn?code=008770&asktype=10'
-url = 'http://finance.daum.net/item/trader.daum?code=005930'
+url = 'http://finance.naver.com/item/frgn.nhn?code=004650'
 #네이버시세 - 매도 호가
-xPath = '//*[@id="traderTable"]/tbody/tr/td//text()'
+#xPath = '//*[@id="content"]/div[2]/table[1]/tbody/tr[4]/td//*[contains(@class, "tah")]/text()'
 
-#xPath = '//*[@id="content"]/div[2]/div[1]/table/tbody/tr/td//*[contains(@class, "tah")]/text()'
+xPath = '//*[@id="content"]/div[2]/table[1]//tr[5]//*[contains(@class, "tah")]/text()'
          
-         
-#네이버시세 - 매수 호가
-#xPath = '//span[@class="tah p11 red01"]/text()'
-#
-#xPath = '//span[@class="tah p11"]/text()'
-#xPath = '//strong[@class="tah p11"]/text()'
 
 result = htmlParser.xPathParse(url, xPath)
 

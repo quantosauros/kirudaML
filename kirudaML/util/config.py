@@ -11,3 +11,4 @@ class config:
     logName_StockSisaeData = "log_StockSisaeData_" + SC.todayDate() + ".txt"
     logName_UpdateStockLists = "log_UpdateStockLists_" + SC.todayDate() + ".txt"
     logName_StackTraderData = "log_StackTraderData_" + SC.todayDate() + ".txt"
+    logName_StackFrgnData = "log_StackFrgnData_" + SC.todayDate() + ".txt"

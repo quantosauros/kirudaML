@@ -32,7 +32,7 @@ class stackData:
         
         #for parseIndex in range(0, len(db_selectSiteData_XPath)):
         db_selectParsingInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %('xpath_na_sisae01'))
-        print(db_selectParsingInfo)
+        #print(db_selectParsingInfo)
 
         for stockIndex in range(0, len(db_stockCode)):
             #print(repr(stockIndex) +" : " + db_stockCode[stockIndex][0])
@@ -185,7 +185,7 @@ class stackData:
     @staticmethod
     def StackFrgnData():
         start_time = time.time()
-        f = open(config.logPath + config.logName_UpdateStockLists, 'w')
+        f = open(config.logPath + config.logName_StackFrgnData, 'w')
         
         dbInstance = dbConnector(sqlMap.connectInfo)
         db_stockCode = dbInstance.select(sqlMap.selectStockCode)

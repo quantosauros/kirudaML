@@ -36,9 +36,8 @@ class stackData:
 
         for stockIndex in range(0, len(db_stockCode)):
             #print(repr(stockIndex) +" : " + db_stockCode[stockIndex][0])
-            #url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + db_selectParsingInfo[0][2]
-            url = db_selectParsingInfo[0][1] + "900040" + db_selectParsingInfo[0][2]
-            
+            url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + db_selectParsingInfo[0][2]
+                        
             xPath = db_selectParsingInfo[0][3]    
             #print(url)
             #print(xPath)

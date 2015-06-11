@@ -23,20 +23,23 @@ for stockIndex in range(0, stockLen):
     
     additionalURL = "" if db_selectParsingInfo[0][2] == None else db_selectParsingInfo[0][2]
     url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + additionalURL
+    #url = db_selectParsingInfo[0][1] + "900040" + additionalURL
+   
     xPath = db_selectParsingInfo[0][3]
     
     parseResult = htmlParser.xPathParse(url, xPath)
         
     dataLen = len(db_selectParsingInfo)    
-    TABLENAME = "stock_supdmd"
+    TABLENAME = "stock_sisae"
     COLUMNNAME = "code,date, " if dataLen is not 0 else "code,date"
     VALUES = SC.makeQuotation(db_stockCode[stockIndex][0]) + SC.comma() + \
-        SC.makeQuotation(SC.todayDate())
+        SC.makeQuotation("20150609")
+        #SC.makeQuotation(SC.todayDate())
         
     VALUES = VALUES + SC.comma() if dataLen is not 0 else VALUES
-
+    print(db_stockCode[stockIndex][0])
+    
     for dataIndex in range(0, dataLen):
-        
         comma = "" if dataIndex == dataLen - 1 else SC.comma()        
         COLUMNNAME = COLUMNNAME + db_selectParsingInfo[dataIndex][0] + comma
         
@@ -46,7 +49,7 @@ for stockIndex in range(0, stockLen):
         
     dbInsertStatement = sqlMap.INSERTFRGNDATA %(VALUES)
     print(dbInsertStatement)
-    dbInstance.insert(dbInsertStatement)
+    #dbInstance.insert(dbInsertStatement)
         
         
 end_time = time.time()

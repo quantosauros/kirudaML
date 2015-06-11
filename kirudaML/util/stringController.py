@@ -54,3 +54,7 @@ class stringController():
     @staticmethod
     def comma():
         return ","
+    
+    @staticmethod
+    def makeParentheses(str):
+        return "(" + str + ")"

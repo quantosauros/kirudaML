@@ -98,6 +98,11 @@ class sqlMap:
             %s ( %s ) \
         VALUES \
             ( %s )"
+    INSERTDATAWITHOUTPARENTHESES = "\
+        INSERT INTO \
+            %s  %s \
+        VALUES \
+            %s "
     
     selectStockCode = " \
         SELECT \
@@ -122,7 +127,7 @@ class sqlMap:
         WHERE \
             CODE = '%s' "
     
-    insertStockList = " \
+    INSERTSTOCKLIST = " \
         INSERT INTO\
             STOCK_INFO\
             (CODE, TICKER, MARKET, CREATE_DATE) \
@@ -136,13 +141,14 @@ class sqlMap:
         
     INSERTFRGNDATA = " \
         INSERT INTO \
-            STOCK_SUPDMD \
-            (CODE, DATE, NETVOLUME_INSTITUTION, NETVOLUME_FOREIGN, FOREIGNSTOCKHOLDINGPERCENT) \
+            STOCK_SISAE \
+            (CODE, DATE, NETVOLUME_INSTITUTION, NETVOLUME_FOREIGN, foreignHoldingStock, FOREIGNSTOCKHOLDINGPERCENT) \
         VALUES \
             (%s) \
         ON DUPLICATE KEY UPDATE \
             NETVOLUME_INSTITUTION = VALUES(NETVOLUME_INSTITUTION), \
             NETVOLUME_FOREIGN = VALUES(NETVOLUME_FOREIGN), \
+            foreignHoldingStock = VALUES(foreignHoldingStock), \
             FOREIGNSTOCKHOLDINGPERCENT = VALUES(FOREIGNSTOCKHOLDINGPERCENT)"
         
     SELECTTRADERINFO = "\

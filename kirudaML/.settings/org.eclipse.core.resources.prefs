@@ -3,6 +3,7 @@ encoding//kiruda/stack/stackData.py=utf-8
 encoding//test/stack/testStack01.py=utf-8
 encoding//test/stack/testStack02.py=utf-8
 encoding//test/stack/testStackTraderData_Daily.py=utf-8
+encoding//test/stack/testStackyData_Daily.py=utf-8
 encoding//test/testAnything.py=utf-8
 encoding//test/util/testParsing.py=cp949
 encoding//test/util/testXPath.py=cp949

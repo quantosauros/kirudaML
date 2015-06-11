@@ -36,7 +36,9 @@ class stackData:
 
         for stockIndex in range(0, len(db_stockCode)):
             #print(repr(stockIndex) +" : " + db_stockCode[stockIndex][0])
-            url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + db_selectParsingInfo[0][2]
+            #url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + db_selectParsingInfo[0][2]
+            url = db_selectParsingInfo[0][1] + "900040" + db_selectParsingInfo[0][2]
+            
             xPath = db_selectParsingInfo[0][3]    
             #print(url)
             #print(xPath)
@@ -53,7 +55,7 @@ class stackData:
                 parseResult.insert(10, '0')
                 
             for dataIndex in range(0, len(db_selectParsingInfo)):                                                   
-                comma = "" if dataIndex == len(parseResult) - 1 else SC.comma()            
+                comma = "" if dataIndex == len(db_selectParsingInfo) - 1 else SC.comma()            
                 COLUMNNAME = COLUMNNAME + db_selectParsingInfo[dataIndex][0] + comma            
                 value = SC.cleanUpString(parseResult[db_selectParsingInfo[dataIndex][4]])
                                     
@@ -115,7 +117,7 @@ class stackData:
                         SC.makeQuotation(market) + SC.comma() + \
                         "NOW()), \n ("
                     
-            query = sqlMap.insertStockList %(values[:-5])         
+            query = sqlMap.INSERTSTOCKLIST %(values[:-5])         
             #print(query)
             f.write(query)
             dbInstance.insert(query)

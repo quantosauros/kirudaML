@@ -25,6 +25,7 @@ class stringController():
         str = str.strip()        
         str = str.replace(',', '')        
         str = str.replace('%', '')
+        str = str.replace('/', '')
         str = str.replace(unicode('원','utf-8'),'')
         #값이 N/A인 경우, null로 입력
         if "N/A" in str :
@@ -32,6 +33,7 @@ class stringController():
             return str
                  
         return str
+
 
     @staticmethod
     def cleanUpStringForFaceValue(str):

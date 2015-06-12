@@ -267,6 +267,103 @@ class stackData:
         print ("TIME: " + repr(round(end_time - start_time, 5)) + "sec")
         #f.close()
     
+    @staticmethod   
+    def StockShortSaleData():
+        start_time = time.time()
+        f = open(config.logPath + config.logName_ShortSaleData, 'w')
+
+        dbInstance = dbConnector(sqlMap.connectInfo)
+        db_stockCode = dbInstance.select(sqlMap.selectStockCode)
+
+        TABLENAME = "stock_sisae"
+        db_selectParsingInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %('xpath_px_shortSale'))
+        print(db_selectParsingInfo)
+
+        for stockIndex in range(0, len(db_stockCode)):
+            url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + db_selectParsingInfo[0][2]
+            xPath = db_selectParsingInfo[0][3]    
+            
+            parseResult = htmlParser.xPathParse(url, xPath)    
+                
+            COLUMNNAME = "code,date,"
+            VALUES = SC.makeQuotation(db_stockCode[stockIndex][0]) + SC.comma() + \
+                SC.makeQuotation(SC.todayDate()) + SC.comma()
+            
+            #빈 데이터가 있을 경우(Face Value가 없음) 0으로 예외처리
+            if len(parseResult) is not len(db_selectParsingInfo):
+                for tempIdx in range(0, len(db_selectParsingInfo)-len(parseResult) + 10):
+                    parseResult.insert(10, '0')
+                    
+                
+            for dataIndex in range(0, len(db_selectParsingInfo)):                                                   
+                comma = "" if dataIndex == len(db_selectParsingInfo) - 1 else SC.comma()            
+                COLUMNNAME = COLUMNNAME + db_selectParsingInfo[dataIndex][0] + comma            
+                
+                if int(SC.cleanUpString(parseResult[1]))<int( SC.todayDate()) :
+                    value = '0'
+                else :
+                    value = SC.cleanUpString(parseResult[db_selectParsingInfo[dataIndex][4]])
+                                        
+                VALUES = VALUES + SC.makeQuotation(value) + comma                        
+            
+            dbInsertStatement = sqlMap.insertStockSisaeData %(COLUMNNAME, VALUES)
+            print(dbInsertStatement)
+            f.write(dbInsertStatement)
+            dbInstance.insert(dbInsertStatement)        
     
+        end_time = time.time()
+        print("Stack the Daily Short Sale Data at " + SC.todayDate() + SC.todayTime())
+        print ("TIME: " + repr(round(end_time - start_time, 5)) + "sec")
+        
+        f.write("Stack the Daily Short Sale Data at " + SC.todayDate() + SC.todayTime())
+        f.write("TIME: " + repr(round(end_time - start_time, 5)) + "sec")
+        f.close()    
+        
+    @staticmethod   
+    def StockLoanTransactionData():
+        start_time = time.time()
+        f = open(config.logPath + config.logName_LoanTransactionData, 'w')
+
+        dbInstance = dbConnector(sqlMap.connectInfo)
+        db_stockCode = dbInstance.select(sqlMap.selectStockCode)
+
+        TABLENAME = "stock_sisae"
+        db_selectParsingInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %('xpath_px_loanTransaction'))
+        print(db_selectParsingInfo)
+        for stockIndex in range(0, len(db_stockCode)):
+            url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + db_selectParsingInfo[0][2]
+            xPath = db_selectParsingInfo[0][3]    
+
+            parseResult = htmlParser.xPathParse(url, xPath)    
+    
+            COLUMNNAME = "code,date,"
+            VALUES = SC.makeQuotation(db_stockCode[stockIndex][0]) + SC.comma() + \
+                SC.makeQuotation(SC.todayDate()) + SC.comma()
+
+            #빈 데이터가 있을 경우(Face Value가 없음) 0으로 예외처리
+            if len(parseResult) is not len(db_selectParsingInfo):
+                for tempIdx in range(0, len(db_selectParsingInfo)-len(parseResult) + 10):
+                    parseResult.insert(10, '0')
+                    
+                
+            for dataIndex in range(0, len(db_selectParsingInfo)):                                                   
+                comma = "" if dataIndex == len(db_selectParsingInfo) - 1 else SC.comma()            
+                COLUMNNAME = COLUMNNAME + db_selectParsingInfo[dataIndex][0] + comma            
+                value = SC.cleanUpString(parseResult[db_selectParsingInfo[dataIndex][4]])
+                                        
+                VALUES = VALUES + SC.makeQuotation(value) + comma                        
+
+            dbInsertStatement = sqlMap.insertStockSisaeData %(COLUMNNAME, VALUES)
+            print(dbInsertStatement)
+            f.write(dbInsertStatement)
+            dbInstance.insert(dbInsertStatement)        
+    
+        end_time = time.time()
+        print("Stack the Daily Loan Transaction Data at " + SC.todayDate() + SC.todayTime())
+        print ("TIME: " + repr(round(end_time - start_time, 5)) + "sec")
+        
+        f.write("Stack the Daily Loan Transaction Data at " + SC.todayDate() + SC.todayTime())
+        f.write("TIME: " + repr(round(end_time - start_time, 5)) + "sec")
+        f.close()     
     
     

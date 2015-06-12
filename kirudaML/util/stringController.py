@@ -25,13 +25,13 @@ class stringController():
         str = str.strip()        
         str = str.replace(',', '')        
         str = str.replace('%', '')
-        str = str.replace('/', '')
+        
         str = str.replace(unicode('원','utf-8'),'')
         #값이 N/A인 경우, null로 입력
         if "N/A" in str :
             str = 'null'
-            return str
-                 
+        
+        str = str.replace('/', '')         
         return str
 
 

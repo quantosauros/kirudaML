@@ -25,7 +25,7 @@ traderLen = len(db_traderInfo)
 
 for stockIndex in range(0, stockLen):
     
-    additionalURL = "" if db_selectParsingInfo[0][2] == None else db_selectParsingInfo[0][2]
+    #additionalURL = "" if db_selectParsingInfo[0][2] == None else db_selectParsingInfo[0][2]
     additionalURL = "&beforeday=1"
     url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + additionalURL
     xPath = db_selectParsingInfo[0][3]
@@ -98,7 +98,7 @@ for stockIndex in range(0, stockLen):
         #print(VALUES)
     dbInsertStatement = sqlMap.INSERTDATAWITHOUTPARENTHESES %(TABLENAME, COLUMNNAME, VALUERESULT[:-1])
     print(dbInsertStatement)
-    #dbInstance.insert(dbInsertStatement)
+    dbInstance.insert(dbInsertStatement)
         
     #print (COLUMNNAME)
     #print(VALUES)

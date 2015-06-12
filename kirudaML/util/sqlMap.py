@@ -144,7 +144,7 @@ class sqlMap:
             STOCK_SISAE \
             (CODE, DATE, NETVOLUME_INSTITUTION, NETVOLUME_FOREIGN, foreignHoldingStock, FOREIGNSTOCKHOLDINGPERCENT) \
         VALUES \
-            (%s) \
+            %s \
         ON DUPLICATE KEY UPDATE \
             NETVOLUME_INSTITUTION = VALUES(NETVOLUME_INSTITUTION), \
             NETVOLUME_FOREIGN = VALUES(NETVOLUME_FOREIGN), \

@@ -19,7 +19,8 @@ db_selectParsingInfo = dbInstance.select(sqlMap.SELECTFRGNINFO_XPATH)
 
 stockLen = len(db_stockCode)
 
-for stockIndex in range(0, stockLen):
+TOTALVALUES = ""
+for stockIndex in range(0, 3):
     
     additionalURL = "" if db_selectParsingInfo[0][2] == None else db_selectParsingInfo[0][2]
     url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + additionalURL
@@ -31,25 +32,29 @@ for stockIndex in range(0, stockLen):
         
     dataLen = len(db_selectParsingInfo)    
     TABLENAME = "stock_sisae"
-    COLUMNNAME = "code,date, " if dataLen is not 0 else "code,date"
+    #COLUMNNAME = "code,date, " if dataLen is not 0 else "code,date"
+    
     VALUES = SC.makeQuotation(db_stockCode[stockIndex][0]) + SC.comma() + \
-        SC.makeQuotation("20150609")
+        SC.makeQuotation("20150620")
         #SC.makeQuotation(SC.todayDate())
         
     VALUES = VALUES + SC.comma() if dataLen is not 0 else VALUES
-    print(db_stockCode[stockIndex][0])
+    #print(db_stockCode[stockIndex][0])
     
     for dataIndex in range(0, dataLen):
         comma = "" if dataIndex == dataLen - 1 else SC.comma()        
-        COLUMNNAME = COLUMNNAME + db_selectParsingInfo[dataIndex][0] + comma
+        #COLUMNNAME = COLUMNNAME + db_selectParsingInfo[dataIndex][0] + comma
         
         value = SC.cleanUpString(parseResult[db_selectParsingInfo[dataIndex][4]]).encode('utf8')        
         VALUES = VALUES + SC.makeQuotation(value) + comma
         #print(value)
-        
-    dbInsertStatement = sqlMap.INSERTFRGNDATA %(VALUES)
-    print(dbInsertStatement)
-    #dbInstance.insert(dbInsertStatement)
+    
+    TOTALVALUES = TOTALVALUES + SC.makeParentheses(VALUES) + SC.comma()
+    
+print(TOTALVALUES)    
+dbInsertStatement = sqlMap.INSERTFRGNDATA %(TOTALVALUES[:-1])
+print(dbInsertStatement)
+dbInstance.insert(dbInsertStatement)
         
         
 end_time = time.time()

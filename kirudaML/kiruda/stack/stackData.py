@@ -349,7 +349,11 @@ class stackData:
             for dataIndex in range(0, len(db_selectParsingInfo)):                                                   
                 comma = "" if dataIndex == len(db_selectParsingInfo) - 1 else SC.comma()            
                 COLUMNNAME = COLUMNNAME + db_selectParsingInfo[dataIndex][0] + comma            
-                value = SC.cleanUpString(parseResult[db_selectParsingInfo[dataIndex][4]])
+                
+                if int(SC.cleanUpString(parseResult[1]))<int( SC.todayDate()) :
+                    value = '0'
+                else :
+                    value = SC.cleanUpString(parseResult[db_selectParsingInfo[dataIndex][4]])
                                         
                 VALUES = VALUES + SC.makeQuotation(value) + comma                        
 

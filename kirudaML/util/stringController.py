@@ -49,6 +49,21 @@ class stringController():
         return d.strftime("%Y%m%d")
     
     @staticmethod
+    def todayDateFromText(str):
+        tmp = str.split()
+        if len(tmp) is not 1:
+            newStr = tmp[0].replace(".", "").strip()
+        else:
+            newStr = str.replace(".", "").strip()
+        d = datetime.today()
+        return d.strftime("%Y") + newStr
+    
+    @staticmethod
+    def earsePeriodMarks(str):
+        newStr = str.replace(".", "")
+        return newStr
+    
+    @staticmethod
     def todayTime():
         d = datetime.today()
         return d.strftime("%H%M")

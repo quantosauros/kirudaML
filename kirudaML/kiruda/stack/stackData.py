@@ -143,6 +143,9 @@ class stackData:
             url = db_selectParsingInfo[0][1] + db_stockCode[stockIndex][1] + additionalURL
             xPath = db_selectParsingInfo[0][3]
             
+            xPathDate = '//*[@id="contentWrap"]/h5/span/span[1]/text()'
+            parseDate = htmlParser.xPathParse(url, xPathDate);
+            
             parseResult = htmlParser.xPathParse(url, xPath)
             dataLen = len(parseResult) - len(parseResult)/4
             
@@ -199,7 +202,7 @@ class stackData:
                 sellVol = tmpData[data][1]
                 
                 VALUES = SC.makeQuotation(db_stockCode[stockIndex][0]) + SC.comma() + \
-                    SC.makeQuotation(SC.todayDate()) + SC.comma() + \
+                    SC.makeQuotation(SC.todayDateFromText(parseDate[0])) + SC.comma() + \
                     SC.makeQuotation(traderName) + SC.comma() + \
                     SC.makeQuotation(buyVol) + SC.comma() + \
                     SC.makeQuotation(sellVol)
@@ -220,7 +223,7 @@ class stackData:
     @staticmethod
     def StackFrgnData():
         start_time = time.time()
-        #f = open(config.logPath + config.logName_StackFrgnData, 'w')
+        f = open(config.logPath + config.logName_StackFrgnData, 'w')
         
         dbInstance = dbConnector(sqlMap.connectInfo)
         db_stockCode = dbInstance.select(sqlMap.selectStockCode)
@@ -241,7 +244,7 @@ class stackData:
             TABLENAME = "stock_sisae"
             COLUMNNAME = "code,date, " if dataLen is not 0 else "code,date"
             VALUES = SC.makeQuotation(db_stockCode[stockIndex][0]) + SC.comma() + \
-                SC.makeQuotation(SC.todayDate())
+                SC.makeQuotation(SC.earsePeriodMarks(parseResult[0]))
                 #SC.makeQuotation("20150620")
                 
                 
@@ -259,13 +262,13 @@ class stackData:
             
         dbInsertStatement = sqlMap.INSERTFRGNDATA %(TOTALVALUES[:-1])
         print(dbInsertStatement)
-        #dbInstance.insert(dbInsertStatement)
-        #f.write(dbInsertStatement)
+        dbInstance.insert(dbInsertStatement)
+        f.write(dbInsertStatement)
                
         end_time = time.time()
         print("Stack the Foreign and Institution Data at " + SC.todayDate() + SC.todayTime())
         print ("TIME: " + repr(round(end_time - start_time, 5)) + "sec")
-        #f.close()
+        f.close()
     
     @staticmethod   
     def StockShortSaleData():

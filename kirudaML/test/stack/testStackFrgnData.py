@@ -35,8 +35,7 @@ for stockIndex in range(0, 3):
     #COLUMNNAME = "code,date, " if dataLen is not 0 else "code,date"
     
     VALUES = SC.makeQuotation(db_stockCode[stockIndex][0]) + SC.comma() + \
-        SC.makeQuotation("20150620")
-        #SC.makeQuotation(SC.todayDate())
+        SC.makeQuotation(SC.earsePeriodMarks(parseResult[0]))
         
     VALUES = VALUES + SC.comma() if dataLen is not 0 else VALUES
     #print(db_stockCode[stockIndex][0])
@@ -54,7 +53,7 @@ for stockIndex in range(0, 3):
 print(TOTALVALUES)    
 dbInsertStatement = sqlMap.INSERTFRGNDATA %(TOTALVALUES[:-1])
 print(dbInsertStatement)
-dbInstance.insert(dbInsertStatement)
+#dbInstance.insert(dbInsertStatement)
         
         
 end_time = time.time()

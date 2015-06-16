@@ -10,6 +10,10 @@ from kiruda.stack.stackData import stackData
 #stackData.UpdateStockLists()
 #stackData.StockSisaeData()
 
-# 다음날 오전에 돌림
-#stackData.StockTraderData()
+#당일 저녁에 돌림
+stackData.StockTraderData()
 stackData.StackFrgnData()
+
+#당일 저녁에 돌림
+#stackData.StockShortSaleData();
+#stackData.StockLoanTransactionData();

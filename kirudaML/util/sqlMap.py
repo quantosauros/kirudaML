@@ -7,7 +7,7 @@ Created on 2015. 5. 14.
 
 class sqlMap:
     
-    connectInfo = ("61.96.111.174", "niks12", "12345", "kiruda")
+    connectInfo = ("61.96.111.175", "niks12", "1qaz2wsx", "kiruda")
     
     selectStockInfo = " \
         SELECT \
@@ -74,6 +74,34 @@ class sqlMap:
             AND B.CODE = A.SITECODE \
             AND A.YN = 'Y' \
             AND A.XPATH = 'xpath_na_frgn01'\
+        ORDER BY A.ARRAYNUM"
+    
+    SELECTINVESTORINFO_XPATH = " \
+        SELECT \
+            A.DATANAME, B.URL1, B.URL2, C.XPATH, A.ARRAYNUM \
+        FROM \
+            SITE_DATA A, \
+            SITE_INFO B, \
+            XPATH_INFO C \
+        WHERE \
+            C.CODE = A.XPATH \
+            AND B.CODE = A.SITECODE \
+            AND A.YN = 'Y' \
+            AND A.XPATH = 'xpath_krx_investor01'\
+        ORDER BY A.ARRAYNUM"
+    
+    SELECTSTOCKLISTINFO_XPATH = " \
+        SELECT \
+            A.DATANAME, B.URL1, B.URL2, C.XPATH, A.ARRAYNUM \
+        FROM \
+            SITE_DATA A, \
+            SITE_INFO B, \
+            XPATH_INFO C \
+        WHERE \
+            C.CODE = A.XPATH \
+            AND B.CODE = A.SITECODE \
+            AND A.YN = 'Y' \
+            AND A.XPATH = 'xpath_krx_stockList'\
         ORDER BY A.ARRAYNUM"
     
     selectSiteDataDaily = " \
@@ -145,13 +173,16 @@ class sqlMap:
     INSERTSTOCKLIST = " \
         INSERT INTO\
             STOCK_INFO\
-            (CODE, TICKER, MARKET, CREATE_DATE) \
+            (CODE, TICKER, MARKET, KRXCODE, NAME, COUNTRYCODE, CREATE_DATE) \
         VALUES \
             %s \
         ON DUPLICATE KEY UPDATE \
             CODE = VALUES(CODE), \
             TICKER = VALUES(TICKER), \
             MARKET = VALUES(MARKET), \
+            KRXCODE = VALUES(KRXCODE), \
+            NAME = VALUES(NAME), \
+            COUNTRYCODE = VALUES(COUNTRYCODE), \
             mod_date = NOW() "
         
     INSERTFRGNDATA = " \
@@ -172,4 +203,8 @@ class sqlMap:
         FROM \
             TRADER_INFO"
         
-        
+    SELECTINVESTORINFO = "\
+        SELECT \
+            * \
+        FROM \
+            INVESTOR_INFO"  

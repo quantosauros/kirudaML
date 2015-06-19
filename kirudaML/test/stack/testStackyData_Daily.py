@@ -8,11 +8,11 @@ from kiruda.stack.stackData import stackData
 
 #장끝나고 돌림
 #stackData.UpdateStockLists()
-#stackData.StockSisaeData()
+stackData.StockSisaeData()
 
 #당일 저녁에 돌림
-stackData.StockTraderData()
-stackData.StackFrgnData()
+#stackData.StockTraderData()
+#stackData.StackFrgnData()
 
 #당일 저녁에 돌림
 #stackData.StockShortSaleData();

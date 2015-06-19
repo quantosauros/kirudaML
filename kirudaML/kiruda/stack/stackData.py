@@ -86,39 +86,58 @@ class stackData:
         f = open(config.logPath + config.logName_UpdateStockLists, 'w')
         
         dbInstance = dbConnector(sqlMap.connectInfo)
-        db_selectSiteData_XPath = dbInstance.select(sqlMap.SELECTSITEDATA_XPATH %('L'))
-        db_listInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %(db_selectSiteData_XPath[0]))
-        db_maxInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %(db_selectSiteData_XPath[1]))
+        db_ParsingInfo = dbInstance.select(sqlMap.SELECTSTOCKLISTINFO_XPATH)
         
-        for marketIndex in range(0, len(db_listInfo)):
+        #print(db_ParsingInfo)
+        
+        countryCode = "KR"
+        gubuns = ("kospiVal", "kosdaqVal", "konexVal")
+        markets = ("KS", "KQ", "KX")
+        basetickerIndex = 1
+        basenameIndex = 3
+        basekrxCodeIndex = 5
+        increment = 7
+        
+        for marketIndex in range(0,2):
+    
+            url = db_ParsingInfo[0][1] + gubuns[marketIndex]  
+            xPath = db_ParsingInfo[0][3]    
+            #print(url, xPath)
             
-            urlForMax = db_maxInfo[marketIndex][1] + repr(1)
-            xPathForMax = db_maxInfo[marketIndex][3] 
-            maxIndex = htmlParser.xPathParse(urlForMax, xPathForMax)[0][39:]
-            market = db_listInfo[marketIndex][0]
+            result = htmlParser.xPathParse(url, xPath)
+            totalLen = len(result)
             
             values = "("
-            for pageIndex in range(1, int(maxIndex) + 1):
+            for index in range(0, totalLen, increment):
+            
+                tickerIndex = index + basetickerIndex
+                nameIndex = index + basenameIndex
+                krxCodeIndex = index + basekrxCodeIndex
                 
-                url = db_listInfo[marketIndex][1] + repr(pageIndex)
-                xPath = db_listInfo[marketIndex][3] 
-                result = htmlParser.xPathParse(url, xPath)
+                #print(tickerIndex, nameIndex, krxCodeIndex)
                 
-                for y in result:             
+                ticker = result[tickerIndex][1:]
+                name = result[nameIndex].encode('utf8')
+                krxCode = result[krxCodeIndex]
+                
+                market = markets[marketIndex] 
+                code = market + ticker
+                #print(name)
+                
+                #print(code + " " + ticker + " " + market + " " + krxCode + " " + name + " " + countryCode)
+                values = values + \
+                    SC.makeQuotation(code) + SC.comma() + \
+                    SC.makeQuotation(ticker) + SC.comma() + \
+                    SC.makeQuotation(market) + SC.comma() + \
+                    SC.makeQuotation(krxCode) + SC.comma() + \
+                    SC.makeQuotation(name) + SC.comma() + \
+                    SC.makeQuotation(countryCode) + SC.comma() + \
+                    "NOW()), \n ("
                     
-                    ticker = y[20:]
-                    code = market + ticker            
-                    #print(code + "," + ticker + "," + market)
-                    
-                    values = values + \
-                        SC.makeQuotation(code) + SC.comma() + \
-                        SC.makeQuotation(ticker) + SC.comma() + \
-                        SC.makeQuotation(market) + SC.comma() + \
-                        "NOW()), \n ("
-                    
-            query = sqlMap.INSERTSTOCKLIST %(values[:-5])         
-            #print(query)
-            f.write(query)
+                #print(values)
+                
+            query = sqlMap.INSERTSTOCKLIST %(values[:-5])    
+            print(query)
             dbInstance.insert(query)
         
         f.close()

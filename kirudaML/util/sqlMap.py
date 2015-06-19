@@ -149,7 +149,7 @@ class sqlMap:
     
     selectStockCode = " \
         SELECT \
-            CODE, TICKER, MARKET \
+            CODE, TICKER, MARKET, KRXCODE, NAME\
         FROM \
             STOCK_INFO "
         
@@ -207,4 +207,5 @@ class sqlMap:
         SELECT \
             * \
         FROM \
-            INVESTOR_INFO"  
+            INVESTOR_INFO \
+        ORDER BY NUM"  

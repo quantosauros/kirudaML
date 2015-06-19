@@ -98,7 +98,7 @@ for stockIndex in range(0, stockLen):
         #print(VALUES)
     dbInsertStatement = sqlMap.INSERTDATAWITHOUTPARENTHESES %(TABLENAME, COLUMNNAME, VALUERESULT[:-1])
     print(dbInsertStatement)
-    dbInstance.insert(dbInsertStatement)
+    #dbInstance.insert(dbInsertStatement)
         
     #print (COLUMNNAME)
     #print(VALUES)

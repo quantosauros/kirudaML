@@ -18,6 +18,6 @@ class htmlParser:
 
     @staticmethod
     def xPathParse(url, xPath):
-        htm = html.parse(url)
+        htm = html.parse(url)                
         result = htm.xpath(xPath)
         return result

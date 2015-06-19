@@ -9,6 +9,7 @@ from util.sqlMap import sqlMap
 from lxml import html
 from util.htmlParser import htmlParser
 from util.stringController import stringController as SC
+import time
 
 dbInstance = dbConnector(sqlMap.connectInfo)
 db_stockCode = dbInstance.select(sqlMap.selectStockCode)
@@ -46,7 +47,7 @@ for stockIndex in range(0, stockLen):
     to_work_dt = SC.todayDate()
     
     stockCode = db_stockCode[stockIndex][3]
-    #print(stockCode)
+    print(stockCode)
     isu_nm = db_stockCode[stockIndex][4] + "[" +db_stockCode[stockIndex][1] +"]" 
     #print(stockCode)
     #print(isu_nm)
@@ -60,8 +61,27 @@ for stockIndex in range(0, stockLen):
         '&searchBtn=' + \
         '&searchBtn2=%EC%A1%B0%ED%9A%8C'         
     #print(parameters)
-    
-    result = htmlParser.xPathParse(url + parameters, xPath)        
+    try:
+        htm = html.parse(url + parameters)
+        result = htm.xpath(xPath)
+    except:
+        print("ERROR")
+        preHtml = html.parse(preUrl)
+        se_key = preHtml.xpath(prexPath)[0].value
+        time.sleep(2)
+        
+        parameters = '&se_key=' + se_key + \
+            '&isu_nm=' + isu_nm +\
+            '&isu_cd=' + stockCode + \
+            '&mthd=' + \
+            '&fr_work_dt=' + fr_work_dt +\
+            '&to_work_dt=' + to_work_dt + \
+            '&searchBtn=' + \
+            '&searchBtn2=%EC%A1%B0%ED%9A%8C'   
+            
+        htm = html.parse(url + parameters)
+        result = htm.xpath(xPath)
+           
     #print(result)
        
     invIndex = 0
@@ -106,7 +126,7 @@ for stockIndex in range(0, stockLen):
         
     dbInsertStatement = sqlMap.INSERTDATAWITHOUTPARENTHESES %(TABLENAME, COLUMNNAME, VALUERESULT[:-1])
     print(dbInsertStatement)
-    dbInstance.insert(dbInsertStatement)
+    #dbInstance.insert(dbInsertStatement)
     
     
     

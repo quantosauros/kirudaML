@@ -4,7 +4,7 @@ Created on 2015. 5. 12.
 @author: Jay
 '''
 import urllib2
-from bs4 import BeautifulSoup
+import BeautifulSoup
 from lxml import html
 
 class htmlParser:

@@ -14,3 +14,5 @@ class config:
     logName_StackFrgnData = "log_StackFrgnData_" + SC.todayDate() + ".txt"
     logName_ShortSaleData = "log_ShortSaleData_" + SC.todayDate() + ".txt"
     logName_LoanTransactionData = "log_LoanTransactionData_" + SC.todayDate() + ".txt"
+    logName_StockInvestorData = "log_StockInvestorData_" + SC.todayDate() + ".txt"
+    

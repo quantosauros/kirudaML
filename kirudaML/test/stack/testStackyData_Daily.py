@@ -13,6 +13,7 @@ stackData.StockSisaeData()
 #당일 저녁에 돌림
 #stackData.StockTraderData()
 #stackData.StackFrgnData()
+stackData.StockInvestorData()
 
 #당일 저녁에 돌림
 #stackData.StockShortSaleData();

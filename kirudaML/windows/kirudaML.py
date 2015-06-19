@@ -45,11 +45,11 @@ class Main(QtGui.QMainWindow):
             stackData.StockTraderData()
             self.ui.label_2.setText("Update Stock Traders.")
             var = True
-        #오후 10시 45분 기관/외국인 거래정보 업데이트
+        #오후 10시 45분 투자자별 거래실적 업데이
         elif timeStr == "224500" and var == True:
             var = False
-            stackData.StackFrgnData()
-            self.ui.label_2.setText("Update Stock Frgn Data.")
+            stackData.StockInvestorData()
+            self.ui.label_2.setText("Update Stock Investor Data.")
             var = True
         #오후 11시 00분 공매도 거래 정보 업데이트
         elif timeStr == "230000" and var == True:

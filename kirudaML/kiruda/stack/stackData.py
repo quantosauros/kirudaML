@@ -425,7 +425,7 @@ class stackData:
             to_work_dt = SC.todayDate()
             
             stockCode = db_stockCode[stockIndex][3]
-            print(stockCode)
+            #print(stockCode)
             isu_nm = db_stockCode[stockIndex][4] + "[" +db_stockCode[stockIndex][1] +"]" 
 
             parameters = '&se_key=' + se_key + \
@@ -507,6 +507,9 @@ class stackData:
             f.write(dbInsertStatement)
 
         end_time = time.time()
+        print("Stack the Daily Stock Investor Data at " + SC.todayDate() + SC.todayTime())
+        print("TIME: " + repr(round(end_time - start_time, 5)) + "sec")
+
         f.write("Stack the Daily Stock Investor Data at " + SC.todayDate() + SC.todayTime())
         f.write("TIME: " + repr(round(end_time - start_time, 5)) + "sec")
         f.close() 

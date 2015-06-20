@@ -184,7 +184,43 @@ class sqlMap:
             NAME = VALUES(NAME), \
             COUNTRYCODE = VALUES(COUNTRYCODE), \
             mod_date = NOW() "
-        
+    
+    INSERTINVESTINDEXDATA = "\
+        INSERT INTO\
+            stock_sisae_test\
+            (code,date,designated, EPS,PER,BPS,PBR,dividendAmount, dividendPercent) \
+        VALUES \
+            %s \
+        ON DUPLICATE KEY UPDATE \
+            designated = VALUES(designated), \
+            EPS = VALUES(EPS), \
+            PER = VALUES(PER), \
+            BPS = VALUES(BPS), \
+            PBR = VALUES(PBR), \
+            dividendAmount = VALUES(dividendAmount), \
+            dividendPercent = VALUES(dividendPercent)"
+    
+    INSERTFOREIGNDATA = "\
+        INSERT INTO\
+            stock_sisae_test\
+            (code,date,foreignLimitStock, foreignHoldingStock) \
+        VALUES \
+            %s \
+        ON DUPLICATE KEY UPDATE \
+            foreignLimitStock = VALUES(foreignLimitStock), \
+            foreignHoldingStock = VALUES(foreignHoldingStock)"
+    
+    INSERTSHORTSALEDATA = "\
+        INSERT INTO\
+            stock_sisae_test\
+            (code,date,shortVolume, shortNotional) \
+        VALUES \
+            %s \
+        ON DUPLICATE KEY UPDATE \
+            shortVolume = VALUES(shortVolume), \
+            shortNotional = VALUES(shortNotional)"
+    
+    
     INSERTFRGNDATA = " \
         INSERT INTO \
             STOCK_SISAE \

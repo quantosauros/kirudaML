@@ -515,7 +515,7 @@ class stackData:
         f.close() 
 
     @staticmethod
-    def StockPriceData():
+    def StockPriceData(date):
         
         dbInstance = dbConnector(sqlMap.connectInfo)
         db_stockCode = dbInstance.select(sqlMap.selectStockCode)
@@ -537,7 +537,7 @@ class stackData:
         for stockIndex in range(0, stockLen):
             
             code = db_stockCode[stockIndex][0]
-            date = SC.todayDate()
+            #date = SC.todayDate()
             #date = '20150619'
             
             additionalURL = "" if db_selectParsingInfo[0][2] == None else db_selectParsingInfo[0][2]
@@ -579,7 +579,10 @@ class stackData:
                     '&searchBtn2=%EC%A1%B0%ED%9A%8C'   
                     
                 htm = html.parse(url + parameters)
-                result = htm.xpath(xPath)
+                try:
+                    result = htm.xpath(xPath)
+                except:
+                    continue
              
             xpath3 = '//*[contains(@class, "down")]'
             result3 = htm.xpath(xpath3)

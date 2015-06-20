@@ -514,4 +514,232 @@ class stackData:
         f.write("TIME: " + repr(round(end_time - start_time, 5)) + "sec")
         f.close() 
 
-    
+    @staticmethod
+    def StockPriceData():
+        
+        dbInstance = dbConnector(sqlMap.connectInfo)
+        db_stockCode = dbInstance.select(sqlMap.selectStockCode)
+        db_selectParsingInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %('xpath_krx_stockPrice'))
+        
+        #print(db_selectParsingInfo)
+        
+        stockLen = len(db_stockCode)
+        
+        preUrl = 'http://www.krx.co.kr/m2/m2_1/m2_1_4/JHPKOR02001_04.jsp'
+        prexPath = '//*[@id="se_key"]'
+        preHtml = html.parse(preUrl)
+        se_key = preHtml.xpath(prexPath)[0].value
+        gubuns = ("kospiVal", "kosdaqVal", "konexVal")
+        
+        TABLENAME = "stock_sisae_test"
+        COLUMNNAME = "(code,date,currentPrice,netChange,tradingVolume,tradingSum,openPrice,highestPrice,lowestPrice,marketCap,sharesOutstanding)"
+        
+        for stockIndex in range(0, stockLen):
+            
+            code = db_stockCode[stockIndex][0]
+            date = SC.todayDate()
+            #date = '20150619'
+            
+            additionalURL = "" if db_selectParsingInfo[0][2] == None else db_selectParsingInfo[0][2]
+            url = db_selectParsingInfo[0][1]
+            xPath = db_selectParsingInfo[0][3]    
+        
+            fr_work_dt = date
+            to_work_dt = date
+            
+            stockCode = db_stockCode[stockIndex][3]
+            #print(stockCode)
+            isu_nm = db_stockCode[stockIndex][4] + "[" +db_stockCode[stockIndex][1] +"]" 
+        
+            parameters = '&se_key=' + se_key + \
+                '&isu_nm=' + isu_nm +\
+                '&isu_cd=' + stockCode + \
+                '&mthd=' + \
+                '&fr_work_dt=' + fr_work_dt +\
+                '&to_work_dt=' + to_work_dt + \
+                '&searchBtn=' + \
+                '&searchBtn2=%EC%A1%B0%ED%9A%8C'   
+        
+            try:
+                htm = html.parse(url + parameters)
+                result = htm.xpath(xPath)
+            except:
+                print("ERROR")
+                preHtml = html.parse(preUrl)
+                se_key = preHtml.xpath(prexPath)[0].value
+                time.sleep(2)
+                
+                parameters = '&se_key=' + se_key + \
+                    '&isu_nm=' + isu_nm +\
+                    '&isu_cd=' + stockCode + \
+                    '&mthd=' + \
+                    '&fr_work_dt=' + fr_work_dt +\
+                    '&to_work_dt=' + to_work_dt + \
+                    '&searchBtn=' + \
+                    '&searchBtn2=%EC%A1%B0%ED%9A%8C'   
+                    
+                htm = html.parse(url + parameters)
+                result = htm.xpath(xPath)
+             
+            xpath3 = '//*[contains(@class, "down")]'
+            result3 = htm.xpath(xpath3)
+            sign = True if len(result3) is 0 else False
+            
+            VALUES = SC.makeQuotation(code) + SC.comma() + SC.makeQuotation(date) + SC.comma()
+            for index in range(0, len(db_selectParsingInfo)):
+                variable = db_selectParsingInfo[index][0]
+                vIndex = db_selectParsingInfo[index][4]
+                value = SC.cleanUpString(result[vIndex])
+                if variable == 'netChange' :
+                    value = value if sign is True else "-" + value
+                #print(variable, vIndex, value)
+                
+                VALUES = VALUES + SC.makeQuotation(value) + SC.comma()
+            
+            #print(VALUES)
+            dbInsertStatement = sqlMap.INSERTDATAWITHOUTPARENTHESES %(TABLENAME, COLUMNNAME, SC.makeParentheses(VALUES[:-1]))
+            print(dbInsertStatement)
+            dbInstance.insert(dbInsertStatement)
+            
+    @staticmethod
+    def StockInvestIndexData():
+        dbInstance = dbConnector(sqlMap.connectInfo)
+        db_selectParsingInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %('xpath_krx_investmentIndex'))
+        
+        #print(db_selectParsingInfo)
+        
+        TABLENAME = "stock_sisae_test"
+        COLUMNNAME = "(code,date,designated, EPS,PER,BPS,PBR,dividendAmount, dividendPercent)"
+        marketGubun = ('2','3')
+        marketCode = ('KS','KQ')
+        date = SC.todayDate()
+        
+        additionalURL = "" if db_selectParsingInfo[0][2] == None else db_selectParsingInfo[0][2]
+        url = db_selectParsingInfo[0][1]
+        xPath = db_selectParsingInfo[0][3]    
+        increment = 13
+        
+        for marketIndex in range(0, len(marketGubun)):
+            
+            #code = db_stockCode[marketIndex][0]
+            #date = SC.todayDate()
+            
+            fr_work_dt = date
+            to_work_dt = date
+        
+            parameters = '&market=' + \
+                '&CMD=' + \
+                '&cur_page=1' + \
+                '&pageSize=3000' + \
+                '&market_gubun=' + marketGubun[marketIndex] +\
+                '&gubun=1' + \
+                '&mthd=' + \
+                '&fr_work_dt=' + fr_work_dt +\
+                '&to_work_dt=' + to_work_dt +\
+                '&searchBtn=' + \
+                '&searchBtn2=%EC%A1%B0%ED%9A%8C'   
+                
+            htm = html.parse(url + parameters)
+            result = htm.xpath(xPath)
+            #print(result)
+            
+            VALUERESULT = ""
+            for dd in range(0, len(result), increment):
+                code = marketCode[marketIndex] + result[1 + dd]
+                VALUES = SC.makeQuotation(code) + SC.comma() + \
+                    SC.makeQuotation(date) + SC.comma()
+                  
+                for index in range(0, len(db_selectParsingInfo)):
+                    variable = db_selectParsingInfo[index][0]
+                    vIndex = db_selectParsingInfo[index][4] + dd
+                    value = SC.cleanUpString(result[vIndex]).encode('utf8')
+                    #print(variable, vIndex, value)
+                    if variable == 'designated':
+                        value = 'Y' if value == '관리종목' else 'N' 
+                    if variable == 'PER' and value == '-':
+                        value = '0'
+                    if variable == 'BPS' and value == '-':
+                        value = '0'
+                    if variable == 'PBR' and value == '-':
+                        value = '0'
+                    if value == '':
+                        value = '0'
+                          
+                    VALUES = VALUES + SC.makeQuotation(value) + SC.comma()
+                    
+                VALUERESULT = VALUERESULT + SC.makeParentheses(VALUES[:-1]) + SC.comma()
+                
+            #print(VALUERESULT)
+            dbInsertStatement = sqlMap.INSERTINVESTINDEXDATA %(VALUERESULT[:-1])
+            print(dbInsertStatement)
+            dbInstance.insert(dbInsertStatement)
+             
+    @staticmethod
+    def StockForeignData():
+        dbInstance = dbConnector(sqlMap.connectInfo)
+        db_selectParsingInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %('xpath_krx_foreign'))
+        
+        #print(db_selectParsingInfo)
+        
+        TABLENAME = "stock_sisae_test"
+        COLUMNNAME = "(code,date,foreignLimitStock, foreignHoldingStock)"
+        marketGubun = ('kospiVal','kosdaqVal')
+        marketCode = ('KS','KQ')
+        indCode = ('1001', '2001')
+        date = SC.todayDate()
+        additionalURL = "" if db_selectParsingInfo[0][2] == None else db_selectParsingInfo[0][2]
+        url = db_selectParsingInfo[0][1]
+        xPath = db_selectParsingInfo[0][3]    
+        increment = 9
+        
+        for marketIndex in range(0, len(marketGubun)):
+            
+            #code = db_stockCode[marketIndex][0]
+            #date = SC.todayDate()
+            
+            work_dt = date
+           
+            parameters = '&market=' + \
+                '&CMD=INIT_LOAD' + \
+                '&market=' + \
+                '&indxIndCd=' + indCode[marketIndex] + \
+                '&page_yn=Y' + \
+                '&cur_page=1' + \
+                '&pageSize=3000' + \
+                '&market_gubun=' + marketGubun[marketIndex] +\
+                '&indx_ind_cd=' + indCode[marketIndex] + \
+                '&work_dt=' + work_dt + \
+                '&searchBtn=' + \
+                '&searchBtn2=%EC%A1%B0%ED%9A%8C'   
+                
+            htm = html.parse(url + parameters)
+            result = htm.xpath(xPath)
+            #print(result)
+            
+            VALUERESULT = ""
+            for dd in range(0, len(result), increment):
+                code = marketCode[marketIndex] + result[1 + dd]
+                VALUES = SC.makeQuotation(code) + SC.comma() + \
+                    SC.makeQuotation(date) + SC.comma()
+                  
+                for index in range(0, len(db_selectParsingInfo)):
+                    variable = db_selectParsingInfo[index][0]
+                    vIndex = db_selectParsingInfo[index][4] + dd
+                    value = SC.cleanUpString(result[vIndex]).encode('utf8')
+                    #print(code, variable, vIndex, value)
+                          
+                    VALUES = VALUES + SC.makeQuotation(value) + SC.comma()
+                    
+                VALUERESULT = VALUERESULT + SC.makeParentheses(VALUES[:-1]) + SC.comma()
+                
+            #print(VALUERESULT)
+            dbInsertStatement = sqlMap.INSERTFOREIGNDATA %(VALUERESULT[:-1])
+            print(dbInsertStatement)
+            dbInstance.insert(dbInsertStatement)
+             
+        
+        
+        
+        
+        
+        

@@ -532,7 +532,7 @@ class stackData:
         gubuns = ("kospiVal", "kosdaqVal", "konexVal")
         
         TABLENAME = "stock_sisae_test"
-        COLUMNNAME = "(code,date,currentPrice,netChange,tradingVolume,tradingSum,openPrice,highestPrice,lowestPrice,marketCap,sharesOutstanding)"
+        COLUMNNAME = "(code,date,currentPrice,tradingVolume,tradingSum,openPrice,highestPrice,lowestPrice,marketCap,sharesOutstanding, netChange)"
         
         for stockIndex in range(0, stockLen):
             

@@ -220,7 +220,6 @@ class sqlMap:
             shortVolume = VALUES(shortVolume), \
             shortNotional = VALUES(shortNotional)"
     
-    
     INSERTFRGNDATA = " \
         INSERT INTO \
             STOCK_SISAE \
@@ -232,6 +231,15 @@ class sqlMap:
             NETVOLUME_FOREIGN = VALUES(NETVOLUME_FOREIGN), \
             foreignHoldingStock = VALUES(foreignHoldingStock), \
             FOREIGNSTOCKHOLDINGPERCENT = VALUES(FOREIGNSTOCKHOLDINGPERCENT)"
+        
+    UPDATEGICSDATA = "\
+        UPDATE \
+            STOCK_INFO \
+        SET \
+            GICS = %s \
+        WHERE \
+            TICKER IN \
+            %s"
         
     SELECTTRADERINFO = "\
         SELECT \
@@ -245,3 +253,15 @@ class sqlMap:
         FROM \
             INVESTOR_INFO \
         ORDER BY NUM"  
+        
+    SELECTGICSINFO = " \
+        SELECT \
+            CODE \
+        FROM \
+            GICS_INFO \
+        WHERE \
+            TYPE ='IG'"
+        
+        
+        
+        

@@ -25,23 +25,23 @@ se_key = preHtml.xpath(prexPath)[0].value
 gubuns = ("kospiVal", "kosdaqVal", "konexVal")
 
 TABLENAME = "stock_sisae_test"
-COLUMNNAME = "(code,date,currentPrice,netChange,tradingVolume,tradingSum,openPrice,highestPrice,lowestPrice,marketCap,sharesOutstanding)"
+COLUMNNAME = "(code,date,currentPrice,tradingVolume,tradingSum,openPrice,highestPrice,lowestPrice,marketCap,sharesOutstanding, netChange)"
 
 for stockIndex in range(0, stockLen):
     
     code = db_stockCode[stockIndex][0]
     #date = SC.todayDate()
-    date = '20150619'
+    date = '20150108'
     
     additionalURL = "" if db_selectParsingInfo[0][2] == None else db_selectParsingInfo[0][2]
     url = db_selectParsingInfo[0][1]
-    xPath = db_selectParsingInfo[0][3]    
+    xPath = '//tr/td/text()'#db_selectParsingInfo[0][3]    
 
     fr_work_dt = date
     to_work_dt = date
     
     stockCode = db_stockCode[stockIndex][3]
-    #print(stockCode)
+    print(stockCode)
     isu_nm = db_stockCode[stockIndex][4] + "[" +db_stockCode[stockIndex][1] +"]" 
 
     parameters = '&se_key=' + se_key + \
@@ -78,13 +78,21 @@ for stockIndex in range(0, stockLen):
     result3 = htm.xpath(xpath3)
     sign = True if len(result3) is 0 else False
     
+    xpath4 = '//tr/td[3]//text()'
+    result4 = htm.xpath(xpath4)
+    #print(result)
+    #print(result4)
+    
     VALUES = SC.makeQuotation(code) + SC.comma() + SC.makeQuotation(date) + SC.comma()
     for index in range(0, len(db_selectParsingInfo)):
         variable = db_selectParsingInfo[index][0]
         vIndex = db_selectParsingInfo[index][4]
-        value = SC.cleanUpString(result[vIndex])
+        
         if variable == 'netChange' :
-            value = value if sign is True else "-" + value
+            tmpValue = SC.cleanUpString(result4[0])
+            value = tmpValue if sign is True else "-" + tmpValue
+        else :
+            value = SC.cleanUpString(result[vIndex])
         #print(variable, vIndex, value)
         
         VALUES = VALUES + SC.makeQuotation(value) + SC.comma()
@@ -92,6 +100,6 @@ for stockIndex in range(0, stockLen):
     #print(VALUES)
     dbInsertStatement = sqlMap.INSERTDATAWITHOUTPARENTHESES %(TABLENAME, COLUMNNAME, SC.makeParentheses(VALUES[:-1]))
     print(dbInsertStatement)
-    dbInstance.insert(dbInsertStatement)
+    #dbInstance.insert(dbInsertStatement)
     
     

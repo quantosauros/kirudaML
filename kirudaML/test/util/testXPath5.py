@@ -9,7 +9,7 @@ from lxml import html
 from util.htmlParser import htmlParser
 from util.stringController import stringController
 
-stockCodeList = ('008770', '005930')
+stockCodeList = ('083570', '005930')
 isu_nm = ('호텔신라 [008770]','삼성전자[005930]')
 stockCode = ('KR7008770000', 'KR7005930003')
 
@@ -23,8 +23,8 @@ se_key = result[0].value
 print(se_key)
 for index in range(0, 2):
     #stockCode = 'KR7' + stockCodeList[1] + '003'
-    fr_work_dt ='20150617'
-    to_work_dt ='20150617'
+    fr_work_dt ='20150108'
+    to_work_dt ='20150108'
 
     url2 = 'http://www.krx.co.kr/por_kor/corelogic/process/m2/m2_1/m2_1_4/hpkor02001_04.xhtml?data-only=true' + \
         '&se_key=' + se_key + \

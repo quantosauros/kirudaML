@@ -588,15 +588,22 @@ class stackData:
             result3 = htm.xpath(xpath3)
             sign = True if len(result3) is 0 else False
             
+            xpath4 = '//tr/td[3]//text()'
+            result4 = htm.xpath(xpath4)
+            
             VALUES = SC.makeQuotation(code) + SC.comma() + SC.makeQuotation(date) + SC.comma()
             for index in range(0, len(db_selectParsingInfo)):
                 variable = db_selectParsingInfo[index][0]
                 vIndex = db_selectParsingInfo[index][4]
-                value = SC.cleanUpString(result[vIndex])
-                if variable == 'netChange' :
-                    value = value if sign is True else "-" + value
-                #print(variable, vIndex, value)
                 
+                
+                if variable == 'netChange' :
+                    tmpValue = SC.cleanUpString(result4[0])
+                    value = tmpValue if sign is True else "-" + tmpValue
+                #print(variable, vIndex, value)
+                else :
+                    value = SC.cleanUpString(result[vIndex])
+                    
                 VALUES = VALUES + SC.makeQuotation(value) + SC.comma()
             
             #print(VALUES)

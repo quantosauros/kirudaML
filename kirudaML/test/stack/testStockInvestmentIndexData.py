@@ -62,7 +62,7 @@ for marketIndex in range(0, len(marketGubun)):
             value = SC.cleanUpString(result[vIndex]).encode('utf8')
             #print(variable, vIndex, value)
             if variable == 'designated':
-                value = 'Y' if value == '관리종목' else 'N' 
+                value = 'Y' if value == '관리종목' else 'N'                 
             if variable == 'PER' and value == '-':
                 value = '0'
             if variable == 'BPS' and value == '-':
@@ -71,14 +71,15 @@ for marketIndex in range(0, len(marketGubun)):
                 value = '0'
             if value == '':
                 value = '0'
-                  
+            
+            
             VALUES = VALUES + SC.makeQuotation(value) + SC.comma()
             
         VALUERESULT = VALUERESULT + SC.makeParentheses(VALUES[:-1]) + SC.comma()
         
     #print(VALUERESULT)
     dbInsertStatement = sqlMap.INSERTINVESTINDEXDATA %(VALUERESULT[:-1])
-    print(dbInsertStatement)
+    #print(dbInsertStatement)
     #dbInstance.insert(dbInsertStatement)
      
     

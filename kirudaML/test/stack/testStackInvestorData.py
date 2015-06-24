@@ -107,8 +107,8 @@ for stockIndex in range(0, stockLen):
         sellAmount = SC.cleanUpString(result[sellAmountIndex])
         netAmount = SC.cleanUpString(result[netAmountIndex])
                 
-        #print(investorCode, buyVolume, sellVolume, netVolume, buyAmount, sellAmount, netAmount)
-        #print(code + " " + date +  " " + investorCode + " " + buyVolume + " " + sellVolume + " " + netVolume + " " + buyAmount + " " + sellAmount + " " + netAmount)
+        print(investorCode, buyVolume, sellVolume, netVolume, buyAmount, sellAmount, netAmount)
+        print(code + " " + date +  " " + investorCode + " " + buyVolume + " " + sellVolume + " " + netVolume + " " + buyAmount + " " + sellAmount + " " + netAmount)
                 
         invIndex = invIndex + 1
             

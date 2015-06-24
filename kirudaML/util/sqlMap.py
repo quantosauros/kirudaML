@@ -246,7 +246,13 @@ class sqlMap:
             * \
         FROM \
             TRADER_INFO"
-        
+    
+    SELECTTRADERTESTINFO = "\
+        SELECT \
+            * \
+        FROM \
+            TRADER_INFO_TEST"
+    
     SELECTINVESTORINFO = "\
         SELECT \
             * \

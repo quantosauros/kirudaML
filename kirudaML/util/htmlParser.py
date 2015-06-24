@@ -4,7 +4,7 @@ Created on 2015. 5. 12.
 @author: Jay
 '''
 import urllib2
-import BeautifulSoup
+from bs4 import BeautifulSoup
 from lxml import html
 
 class htmlParser:
@@ -18,6 +18,7 @@ class htmlParser:
 
     @staticmethod
     def xPathParse(url, xPath):
-        htm = html.parse(url)                
+        parser1 = html.HTMLParser(encoding = 'utf8')
+        htm = html.parse(url, parser = parser1)                
         result = htm.xpath(xPath)
         return result

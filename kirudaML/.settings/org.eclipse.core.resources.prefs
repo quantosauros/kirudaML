@@ -8,6 +8,7 @@ encoding//test/stack/testStackyData_Daily.py=utf-8
 encoding//test/stack/testStockForeignData.py=utf-8
 encoding//test/stack/testStockInvestmentIndexData.py=utf-8
 encoding//test/stack/testStockShortSaleData.py=utf8
+encoding//test/stack/testStockTraderDataNew.py=utf8
 encoding//test/stack/testUpdateStockLists.py=utf-8
 encoding//test/testAnything.py=utf-8
 encoding//test/util/testParsing.py=utf-8

@@ -12,7 +12,7 @@ from util.sqlMap import sqlMap
 
 
 dbInstance = dbConnector(sqlMap.connectInfo)
-db_ParsingInfo = dbInstance.select(sqlMap.SELECTSTOCKLISTINFO_XPATH)
+db_ParsingInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %('xpath_krx_stockList'))
 
 #print(db_ParsingInfo)
 
@@ -64,7 +64,7 @@ for marketIndex in range(0,3):
         
     query = sqlMap.INSERTSTOCKLIST %(values[:-5])    
     print(query)
-    #dbInstance.insert(query)
+    dbInstance.insert(query)
 
 
 

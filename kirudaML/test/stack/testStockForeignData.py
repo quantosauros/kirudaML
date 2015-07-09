@@ -69,6 +69,6 @@ for marketIndex in range(0, len(marketGubun)):
     #print(VALUERESULT)
     dbInsertStatement = sqlMap.INSERTFOREIGNDATA %(VALUERESULT[:-1])
     print(dbInsertStatement)
-    dbInstance.insert(dbInsertStatement)
+    #dbInstance.insert(dbInsertStatement)
      
     

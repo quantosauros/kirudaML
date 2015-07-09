@@ -42,7 +42,7 @@ for fxIndex in range(0, len(fxCode)):
         statement = "INSERT INTO fx_data (code, date, fxRate) VALUES " + valueStatement[:-1]
         
         print(statement)
-        dbInstance.insert(statement)
+        #dbInstance.insert(statement)
         #('FX_USDKRW', '20150630', '1114.90');
 
 

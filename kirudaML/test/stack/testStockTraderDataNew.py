@@ -19,11 +19,11 @@ from lxml.html import HTMLParser
 
 
 dbInstance = dbConnector(sqlMap.connectInfo)
-db_stockCode = dbInstance.select(sqlMap.selectStockCode)
-db_selectParsingInfo = dbInstance.select(sqlMap.SELECTINVESTORINFO_XPATH)
-db_traderInfo = dbInstance.select(sqlMap.SELECTTRADERTESTINFO)
+db_stockCode = dbInstance.select(sqlMap.SELECTSTOCKCODE)
+db_selectParsingInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %('xpath_krx_investor'))
+db_traderInfo = dbInstance.select(sqlMap.SELECTTRADERINFO)
 
-#print(db_selectParsingInfo)
+print(db_selectParsingInfo)
 
 stockLen = len(db_stockCode)
 traderLen = len(db_traderInfo)
@@ -36,8 +36,8 @@ se_key = preHtml.xpath(prexPath)[0].value
 #print(se_key)
 
 increment = 8
-TABLENAME = "stock_trader_test"
-COLUMNNAME = "(code,date,investorCode,buyVolume,sellVolume,netVolume,buyAmount,sellAmount,netAmount)"
+TABLENAME = "stock_trader"
+COLUMNNAME = "(code,date,traderCode,buyVolume,sellVolume,buyAmount,sellAmount)"
 
 for stockIndex in range(0, stockLen):
  
@@ -157,7 +157,7 @@ for stockIndex in range(0, stockLen):
     #print(VALUERESULT)    
     dbInsertStatement = sqlMap.INSERTDATAWITHOUTPARENTHESES %(TABLENAME, COLUMNNAME, VALUERESULT[:-1])
     print(dbInsertStatement)
-    dbInstance.insert(dbInsertStatement)
+    #dbInstance.insert(dbInsertStatement)
     
     
     

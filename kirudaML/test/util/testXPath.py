@@ -11,11 +11,11 @@ from util.stringController import stringController
 
 #네이버시세
 #url = 'http://finance.naver.com/item/sise.nhn?code=008770&asktype=10'
-url = 'http://www.krx.co.kr/m2/m2_1/m2_1_11/JHPKOR02001_11.jsp?isu_cd=041830'
+url = 'http://www.krx.co.kr/por_kor/popup/JHPKOR13008.jsp?charOrder=0&mkt_typ=S&isu_cd=&shrt_isu_cd=&kor_isu_nm=&indx_ind_cd=&market_gubun=kospiVal'
 #네이버시세 - 매도 호가
 #xPath = '//*[@id="content"]/div[2]/table[1]/tbody/tr[4]/td//*[contains(@class, "tah")]/text()'
 
-xPath = '//*[@id="se_key"]'
+xPath = '//*[@id="tbl1"]/tbody/tr//text()'
          
 
 result = htmlParser.xPathParse(url, xPath)
@@ -23,7 +23,7 @@ result = htmlParser.xPathParse(url, xPath)
 i = 0
 for x in result:
     print("%d : " % i)
-    print(x.value)
+    print(x)
     #print(stringController.cleanUpString(x))
     #print(x[39:])
     i = i + 1

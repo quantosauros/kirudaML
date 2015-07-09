@@ -12,8 +12,8 @@ from util.stringController import stringController as SC
 import time
 
 dbInstance = dbConnector(sqlMap.connectInfo)
-db_stockCode = dbInstance.select(sqlMap.selectStockCode)
-db_selectParsingInfo = dbInstance.select(sqlMap.SELECTINVESTORINFO_XPATH)
+db_stockCode = dbInstance.select(sqlMap.SELECTSTOCKCODE)
+db_selectParsingInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %('xpath_krx_investor'))
 db_investorInfo = dbInstance.select(sqlMap.SELECTINVESTORINFO)
 
 #print(db_selectParsingInfo)

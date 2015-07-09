@@ -15,16 +15,14 @@ class dbConnector:
         #dbArgs : dbhost, dbuser, dbpasswd, dbname
         try:
             print '\nChecking MySQL connection...'
-            self.db = MySQLdb.connect(dbArgs[0], dbArgs[1], dbArgs[2], dbArgs[3])
-            self.cursor = self.db.cursor()
-            self.cursor.execute('set names utf8')            
-            self.cursor.execute('select version()')
+            self.db = MySQLdb.connect(dbArgs[0], dbArgs[1], dbArgs[2], dbArgs[3])                   
+            #self.cursor.execute('select version()')
             print 'Connection OK, proceeding.'
         except MySQLdb as error:
             print 'Error: %s ' %error + '\nStop.\n'
             sys.exit()
         
-    def insert(self, query):        
+    def insert(self, query):
         self.execute(query)
         self.db.commit()
         print 'Inserted data.'
@@ -37,11 +35,16 @@ class dbConnector:
         return result    
             
     def execute(self, sqlStatement, args = None):
+        self.callCursor()
         if args == None:
             self.cursor.execute(sqlStatement)
         else:
             self.cursor.execute(sqlStatement, args)
-                            
+            
+    def callCursor(self):
+        self.cursor = self.db.cursor()
+        self.cursor.execute('set names utf8')           
+         
     def __del__(self):
         print '\nFinishing operations...'
         self.cursor.close()

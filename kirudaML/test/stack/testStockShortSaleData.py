@@ -12,7 +12,7 @@ from util.stringController import stringController as SC
 import time
 
 dbInstance = dbConnector(sqlMap.connectInfo)
-db_stockCode = dbInstance.select(sqlMap.selectStockCode)
+db_stockCode = dbInstance.select(sqlMap.SELECTSTOCKCODE)
 db_selectParsingInfo = dbInstance.select(sqlMap.SELECTPARSEINGINFO %('xpath_krx_shortSale'))
 db_investorInfo = dbInstance.select(sqlMap.SELECTINVESTORINFO)
 
@@ -126,7 +126,7 @@ for stockIndex in range(0, stockLen):
         
     dbInsertStatement = sqlMap.INSERTSHORTSALEDATA %(SC.makeParentheses(VALUES[:-1]))
     print(dbInsertStatement)
-    dbInstance.insert(dbInsertStatement)
+    #dbInstance.insert(dbInsertStatement)
     
     
     

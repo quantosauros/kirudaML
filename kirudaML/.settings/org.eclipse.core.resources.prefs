@@ -1,9 +1,10 @@
 eclipse.preferences.version=1
 encoding//kiruda/stack/stackData.py=utf-8
-encoding//test/stack/testStack01.py=utf-8
-encoding//test/stack/testStack02.py=utf-8
+encoding//test/stack/testCommodityData.py=utf-8
+encoding//test/stack/testFXData.py=utf-8
+encoding//test/stack/testGICSList.py=utf-8
+encoding//test/stack/testIndexData.py=utf-8
 encoding//test/stack/testStackInvestorData.py=utf8
-encoding//test/stack/testStackTraderData_Daily.py=utf-8
 encoding//test/stack/testStackyData_Daily.py=utf-8
 encoding//test/stack/testStockForeignData.py=utf-8
 encoding//test/stack/testStockInvestmentIndexData.py=utf-8

@@ -17,8 +17,8 @@ class htmlParser:
         return str
 
     @staticmethod
-    def xPathParse(url, xPath):
-        parser1 = html.HTMLParser(encoding = 'utf8')
+    def xPathParse(url, xPath, encodingMethod = 'utf-8'):
+        parser1 = html.HTMLParser(encoding = encodingMethod)
         htm = html.parse(url, parser = parser1)                
         result = htm.xpath(xPath)
         return result

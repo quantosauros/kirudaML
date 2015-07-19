@@ -64,7 +64,7 @@ for marketIndex in range(0,3):
         
     query = sqlMap.INSERTSTOCKLIST %(values[:-5])    
     print(query)
-    dbInstance.insert(query)
+    #dbInstance.insert(query)
 
 
 

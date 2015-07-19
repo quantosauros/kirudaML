@@ -10,8 +10,7 @@ from util.dbConnector import dbConnector
 from util.sqlMap import sqlMap
 
 dbInstance = dbConnector(sqlMap.connectInfo)
-#fxCode = ('OIL_CL','OIL_DU','OIL_BRT','CMDT_GC')
-fxCode = ('OIL_DU')
+fxCode = ('OIL_CL','OIL_DU','OIL_BRT','CMDT_GC')
 #300, 323, 303, 299
 for fxIndex in range(0, len(fxCode)):
     for pageIndex in range(307, 323):

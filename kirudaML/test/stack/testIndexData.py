@@ -10,9 +10,8 @@ from util.dbConnector import dbConnector
 from util.sqlMap import sqlMap
 
 dbInstance = dbConnector(sqlMap.connectInfo)
-indexCode = ('KPI200',)#'KOSPI','KOSDAQ','KPI200',)
-#'DJI@DJI','DJI@DJT','NAS@IXIC','NAS@NDX','NAS@SOX','SHS@000001',)
-#1120, 801, 393
+indexCode = ('KOSPI','KOSDAQ','KPI200',)
+
 for idIndex in range(0, len(indexCode)):
     for pageIndex in range(1, 394):
         

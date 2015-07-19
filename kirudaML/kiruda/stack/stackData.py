@@ -11,6 +11,7 @@ from util.sqlMap import sqlMap
 from util.stringController import stringController as SC
 from util.config import config
 from lxml import html
+import json
 
 class stackData:
 
@@ -749,7 +750,164 @@ class stackData:
             print(dbInsertStatement)
             dbInstance.insert(dbInsertStatement)
 
+    '''
+    Update Index Data
+    '''
+    @staticmethod
+    def UpdateIndexData():
+        dbInstance = dbConnector(sqlMap.connectInfo)
+        #Korean Index
+        indexCode = ('KOSPI','KOSDAQ','KPI200',)
+        
+        page = '1'
+        for idIndex in range(0, len(indexCode)):
+            url = 'http://finance.naver.com/sise/sise_index_day.nhn?code=' + \
+            indexCode[idIndex] + '&page=' + page
+            xPath = '*//*[contains(@class, "date")]/text() | *//*[contains(@class, "number")]/text()'
+            #print(url)
+            
+            result = htmlParser.xPathParse(url, xPath)
+            print(result)   
+        
+            resultLen = len(result)
+        
+            valueStatement = ""
+        
+            for index in range(0, resultLen, 6):    
+                date = result[index].replace('.', '')
+                value = result[index + 1].replace(',','')
+                #print indexCode[idIndex], date, value
+                
+                tmpStatement = SC.makeQuotation(indexCode[idIndex]) + SC.comma() + \
+                    SC.makeQuotation(date) + SC.comma() + \
+                    SC.makeQuotation(value)
                     
+                valueStatement = valueStatement + SC.makeParentheses(tmpStatement) + SC.comma()
+                    
+            statement = "INSERT INTO index_data (code, date, value) VALUES " + \
+                valueStatement[:-1] + 'ON DUPLICATE KEY UPDATE VALUE = VALUES(VALUE)'
+                
+            print(statement)
+            dbInstance.insert(statement)
+        
+        #Foreign Index
+        symbols = ('DJI@DJI','DJI@DJT','NAS@IXIC','NAS@NDX','NAS@SOX',
+                   'SHS@000001','SHS@000002','SHS@000003', 
+                   'NII@NI225',
+                   'HSI@HSI', 'HSI@HSCE', 'HSI@HSCC', 
+                   'LNS@FTSE100', 'PAS@CAC40', 'XTR@DAX30')
+        
+        for symbolIndex in range(0, len(symbols)) :
+            pageIndex = 1
+            url = 'http://finance.naver.com/world/worldDayListJson.nhn?symbol=' + symbols[symbolIndex] + '&fdtc=0&page=' + repr(pageIndex)
+            xPath = '*//text()'
+            #xPath = '/html/body/div/table/tbody/tr/td/text()'
+                
+            #print(url)
+            parser1 = html.HTMLParser(encoding = 'utf-8')
+            htm = html.parse(url, parser = parser1)   
+                         
+            result = htm.xpath(xPath)
+            #print result
+            str = result[0][1:-2]
+            splitedString = str.split('},')
+            
+            valueStatement = ""
+            for x in splitedString :
+                tmpStr = x + '}'
+                #print tmpStr
+                data = json.loads(tmpStr)
+                #print data
+                
+                code = symbols[symbolIndex]
+                date = data['xymd'] 
+                close = repr(data['clos']) 
+                open = data['open']
+                high = data['high'] 
+                low = data['low']
+                
+                #print date, close, open, high, low
+                tmpStatement = SC.makeQuotation(code) + SC.comma() + \
+                    SC.makeQuotation(date) + SC.comma() + \
+                    SC.makeQuotation(close)
+                    
+                valueStatement = valueStatement + SC.makeParentheses(tmpStatement) + SC.comma()
+            statement = "INSERT INTO index_data (code, date, value) VALUES " +\
+                valueStatement[:-1] + 'ON DUPLICATE KEY UPDATE VALUE = VALUES(VALUE)'
+                
+            print statement
+            dbInstance.insert(statement)
+    
+    '''
+    Update Commodity & FX Data
+    '''
+    @staticmethod
+    def UpdateCCData():
+        dbInstance = dbConnector(sqlMap.connectInfo)
+        #FX Update
+        fxCode = ('FX_USDKRW', 'FX_EURKRW', 'FX_JPYKRW', 'FX_CNYKRW', 'FX_GBPKRW', 'FX_CADKRW', 'FX_AUDKRW',)
+        for fxIndex in range(0, len(fxCode)):
+            page = '1'
+            url = 'http://info.finance.naver.com/marketindex/exchangeDailyQuote.nhn?marketindexCd=' + \
+                fxCode[fxIndex] + '&page=' + page
+            xPath = '/html/body/div/table/tbody/tr/td[2]/text() | /html/body/div/table/tbody/tr/td[1]/text()'    
+            
+            result = htmlParser.xPathParse(url, xPath)
+            #print result
+            resultLen = len(result)
+            valueStatement = ""
+            for index in range(0, resultLen, 2):
+                date = result[index].replace('.', '')
+                value = result[index + 1].replace(',','')
+                #print fxCode[fxIndex], date, value
+                
+                tmpStatement = SC.makeQuotation(fxCode[fxIndex]) + SC.comma() + \
+                    SC.makeQuotation(date) + SC.comma() + \
+                    SC.makeQuotation(value)
+                    
+                valueStatement = valueStatement + SC.makeParentheses(tmpStatement) + SC.comma()
+                    
+            statement = "INSERT INTO cc_data (code, date, value) VALUES " +\
+                valueStatement[:-1] + 'ON DUPLICATE KEY UPDATE VALUE = VALUES(VALUE)'
+                
+            print(statement)
+            dbInstance.insert(statement)
+        
+        #Commodity Update
+        CommodityCode = ('OIL_CL','OIL_DU','OIL_BRT','CMDT_GC')
+        for commodityIndex in range(0, len(CommodityCode)):
+            page = '1'    
+            url = 'http://info.finance.naver.com/marketindex/worldDailyQuote.nhn?marketindexCd=' +\
+                CommodityCode[commodityIndex] + '&fdtc=2' + \
+                '&page=' + page
+            xPath = '/html/body/div/table/tbody/tr/td[1]/text() | /html/body/div/table/tbody/tr/td[2]/text()'    
+            #print(url)
+            
+            result = htmlParser.xPathParse(url, xPath)
+            
+            #print(result)
+            resultLen = len(result)
+            
+            valueStatement = ""
+            for index in range(0, resultLen, 2):
+                date = SC.cleanUpString(result[index].replace('.', ''))
+                value = SC.cleanUpString(result[index + 1].replace(',',''))
+                #print fxCode[commodityIndex], date, value
+                
+                tmpStatement = SC.makeQuotation(CommodityCode[commodityIndex]) + SC.comma() + \
+                    SC.makeQuotation(date) + SC.comma() + \
+                    SC.makeQuotation(value)
+                    
+                valueStatement = valueStatement + SC.makeParentheses(tmpStatement) + SC.comma()
+                    
+            
+            statement = "INSERT INTO cc_data (code, date, value) VALUES " +\
+                valueStatement[:-1] + 'ON DUPLICATE KEY UPDATE VALUE = VALUES(VALUE)'
+                
+            print(statement)
+            dbInstance.insert(statement)
+            
+            
 #===============================================================================
 #     #XX
 #     @staticmethod

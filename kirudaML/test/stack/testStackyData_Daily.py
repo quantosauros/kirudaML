@@ -27,7 +27,10 @@ from kiruda.stack.stackData import stackData
  #   print(date[i])
   #  stackData.StockTraderDataNew(repr(date[i]))
 date = '20150630'
-stackData.UpdateGICSList(date)
+#stackData.IndexData()
+stackData.UpdateCCData()
+
+#stackData.UpdateGICSList(date)
 #stackData.UpdateStockLists()
 #stackData.StockPriceData(date)
 #stackData.StockInvestIndexData(date)
